@@ -208,6 +208,7 @@
 
 	        _this.state = {
 	            curItem: null,
+	            curType: null,
 	            touchStartY: 0,
 	            touchStartTime: 0,
 	            touchMoveY: 0, //记录每一帧touchMove的y坐标
@@ -313,28 +314,50 @@
 	            eleArr.forEach(function (item) {
 	                var itemContent = item.nextSibling.nextSibling;
 	                var type = itemContent.getAttribute('data-type');
+	                var y = 0;
 	                if (type == 'year') {
-	                    that.moveElement(itemContent, 0, 34 * (2013 - that.state.year));
+	                    y = 34 * (2013 - that.state.year);
+	                    that.moveElement(itemContent, 0, y);
+	                    that.setState({
+	                        moveYYear: y
+	                    });
 	                } else if (type == 'month') {
-	                    that.moveElement(itemContent, 0, 34 * (4 - that.state.month));
+	                    y = 34 * (4 - that.state.month);
+	                    that.moveElement(itemContent, 0, y);
+	                    that.setState({
+	                        moveYMonth: y
+	                    });
 	                } else if (type == 'date') {
-	                    that.moveElement(itemContent, 0, 34 * (4 - that.state.date));
+	                    y = 34 * (4 - that.state.date);
+	                    that.moveElement(itemContent, 0, y);
+	                    that.setState({
+	                        moveYDate: y
+	                    });
 	                } else if (type == 'hour') {
-	                    that.moveElement(itemContent, 0, 34 * (3 - that.state.hour));
+	                    y = 34 * (3 - that.state.hour);
+	                    that.moveElement(itemContent, 0, y);
+	                    that.setState({
+	                        moveYHour: y
+	                    });
 	                } else if (type == 'minute') {
-	                    that.moveElement(itemContent, 0, 34 * (3 - that.state.minute));
+	                    y = 34 * (3 - that.state.minute);
+	                    that.moveElement(itemContent, 0, y);
+	                    that.setState({
+	                        moveYMinute: y
+	                    });
 	                }
 
 	                item.addEventListener('touchstart', function (event) {
-	                    var item = itemContent;
+	                    event.preventDefault();
 	                    var evt = event.touches[0] || event;
-	                    var rect = item.getBoundingClientRect();
+	                    var rect = itemContent.getBoundingClientRect();
 
-	                    var container = item.parentNode;
+	                    var container = itemContent.parentNode;
 	                    var containerRect = container.getBoundingClientRect();
 
 	                    that.setState({
-	                        curItem: item,
+	                        curItem: itemContent,
+	                        curType: itemContent.getAttribute('data-type'),
 	                        touchStartY: evt.pageY,
 	                        touchStartTime: +new Date(),
 	                        touching: true,
@@ -362,7 +385,6 @@
 	                if (!that.state.touching) {
 	                    return;
 	                }
-
 	                event.preventDefault();
 	                var evt = event.touches[0] || event;
 	                that.setState({
@@ -371,8 +393,19 @@
 	                });
 
 	                var moveY = evt.pageY - that.state.touchStartY;
+	                var tempY = 0;
+	                if (that.state.curType == 'year') {
+	                    tempY = that.state.moveYYear + moveY;
+	                } else if (that.state.curType == 'month') {
+	                    tempY = that.state.moveYMonth + moveY;
+	                } else if (that.state.curType == 'date') {
+	                    tempY = that.state.moveYDate + moveY;
+	                } else if (that.state.curType == 'hour') {
+	                    tempY = that.state.moveYHour + moveY;
+	                } else if (that.state.curType == 'minute') {
+	                    tempY = that.state.moveYMinute + moveY;
+	                }
 
-	                var tempY = that.state.objTranslate.y + moveY;
 	                if (tempY > itemHeight * 6) {
 	                    tempY = itemHeight * 6;
 	                }
@@ -386,16 +419,36 @@
 	                if (!that.state.touching) {
 	                    return;
 	                }
+	                event.preventDefault();
 	                var evt = event.touches[0] || event;
 
 	                that.setState({
 	                    touching: false,
-	                    objTranslate: {
-	                        y: that.state.moveY
-	                    },
 	                    touchEndTime: +new Date(),
 	                    inertia: true
 	                });
+	                if (that.state.curType == 'year') {
+	                    that.setState({
+	                        moveYYear: that.state.moveY
+	                    });
+	                } else if (that.state.curType == 'month') {
+	                    that.setState({
+	                        moveYMonth: that.state.moveY
+	                    });
+	                } else if (that.state.curType == 'date') {
+	                    that.setState({
+	                        moveYDate: that.state.moveY
+	                    });
+	                } else if (that.state.curType == 'hour') {
+	                    that.setState({
+	                        moveYHour: that.state.moveY
+	                    });
+	                } else if (that.state.curType == 'minute') {
+	                    that.setState({
+	                        moveYMinute: that.state.moveY
+	                    });
+	                }
+
 	                that.inBox(that.state.curItem);
 	                //最后一次touchMoveTime和touchEndTime之间超过30ms,意味着停留了长时间,不做滑动
 	                if (that.state.touchEndTime - that.state.touchMoveTime > 30) {
@@ -418,14 +471,37 @@
 	                    }
 	                    speed = speed - speed / rate;
 
-	                    var y = that.state.objTranslate.y + speed;
-
-	                    that.moveElement(that.state.curItem, 0, y);
-	                    that.setState({
-	                        objTranslate: {
-	                            y: y
-	                        }
-	                    });
+	                    if (that.state.curType == 'year') {
+	                        var y = that.state.moveYYear + speed;
+	                        that.moveElement(that.state.curItem, 0, y);
+	                        that.setState({
+	                            moveYYear: y
+	                        });
+	                    } else if (that.state.curType == 'month') {
+	                        var y = that.state.moveYMonth + speed;
+	                        that.moveElement(that.state.curItem, 0, y);
+	                        that.setState({
+	                            moveYMonth: y
+	                        });
+	                    } else if (that.state.curType == 'date') {
+	                        var y = that.state.moveYDate + speed;
+	                        that.moveElement(that.state.curItem, 0, y);
+	                        that.setState({
+	                            moveYDate: y
+	                        });
+	                    } else if (that.state.curType == 'hour') {
+	                        var y = that.state.moveYHour + speed;
+	                        that.moveElement(that.state.curItem, 0, y);
+	                        that.setState({
+	                            moveYHour: y
+	                        });
+	                    } else if (that.state.curType == 'minute') {
+	                        var y = that.state.moveYMinute + speed;
+	                        that.moveElement(that.state.curItem, 0, y);
+	                        that.setState({
+	                            moveYMinute: y
+	                        });
+	                    }
 
 	                    if (Math.abs(speed) < 0.5) {
 	                        speed = 0;
@@ -453,19 +529,32 @@
 	            var that = this;
 	            var maxY = 3 * itemHeight;
 	            var minY = -(that.state.objBounding.height - 4 * itemHeight);
-	            var moveY; //delta变化量
-	            if (that.state.objTranslate.y > maxY) {
-	                moveY = maxY - that.state.objTranslate.y;
-	            } else if (that.state.objTranslate.y < minY) {
-	                moveY = minY - that.state.objTranslate.y;
+	            var moveY = 0; //delta变化量
+	            var y = 0;
+	            if (that.state.curType == 'year') {
+	                y = that.state.moveYYear;
+	            } else if (that.state.curType == 'month') {
+	                y = that.state.moveYMonth;
+	            } else if (that.state.curType == 'date') {
+	                y = that.state.moveYDate;
+	            } else if (that.state.curType == 'hour') {
+	                y = that.state.moveYHour;
+	            } else if (that.state.curType == 'minute') {
+	                y = that.state.moveYMinute;
+	            }
+
+	            if (y > maxY) {
+	                moveY = maxY - y;
+	            } else if (y < minY) {
+	                moveY = minY - y;
 	            } else {
 	                //调整位置,使时间块位于中间
-	                moveY = Math.ceil(that.state.objTranslate.y / itemHeight) * itemHeight - that.state.objTranslate.y;
+	                moveY = Math.ceil(y / itemHeight) * itemHeight - y;
 	            }
 
 	            var start = 0;
 	            var during = 40;
-	            var init = that.state.objTranslate.y;
+	            var init = y;
 	            //变化量为0,不用动
 	            if (moveY == 0) {
 	                that.setState({
@@ -478,9 +567,6 @@
 	            var run = function run() {
 	                if (that.state.touching) {
 	                    that.setState({
-	                        objTranslate: {
-	                            y: that.state.moveY
-	                        },
 	                        inertia: false
 	                    });
 	                    return;
@@ -489,16 +575,35 @@
 	                start++;
 	                var y = that.easeOutQuad(start, init, moveY, during);
 	                that.moveElement(ele, 0, y);
+	                if (that.state.curType == 'year') {
+	                    that.setState({
+	                        moveYYear: y
+	                    });
+	                } else if (that.state.curType == 'month') {
+	                    that.setState({
+	                        moveYMonth: y
+	                    });
+	                } else if (that.state.curType == 'date') {
+	                    that.setState({
+	                        moveYDate: y
+	                    });
+	                } else if (that.state.curType == 'hour') {
+	                    that.setState({
+	                        moveYHour: y
+	                    });
+	                } else if (that.state.curType == 'minute') {
+	                    that.setState({
+	                        moveYMinute: y
+	                    });
+	                }
 
 	                if (start < during) {
 	                    requestAnimationFrame(run);
 	                } else {
 	                    that.setState({
-	                        objTranslate: {
-	                            y: y
-	                        },
 	                        inertia: false
 	                    });
+
 	                    that.calTime(y);
 	                }
 	            };
@@ -507,7 +612,7 @@
 	    }, {
 	        key: 'calTime',
 	        value: function calTime(y) {
-	            var type = this.state.curItem.getAttribute('data-type');
+	            var type = this.state.curType;
 	            if (type == 'year') {
 	                this.setState({
 	                    moveYYear: y,
