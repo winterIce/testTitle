@@ -1,32 +1,17 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>弹动小球使用演示</title>
-<style>
-.ball {
-	position: absolute;
-    line-height: 2.75rem;
-    width: 2.75rem;
-    height: 2.75rem;
-    padding: .5rem;
-    text-align: center;
-    border-radius: 99px;
-    color: #fff;
-    /*border: 1rem solid transparent;*/
-    background-color: #ed424b;
-    background-clip: padding-box;
-    text-decoration: none;
-}
-</style>
+	<title>TimePicker</title>
+	<meta charset="UTF-8" />
+	<meta name="renderer" content="webkit" />
+	<meta name="screen-orientation" content="portrait" />
+	<meta name="x5-orientation" content="portrait" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 </head>
-
 <body>
-<a href="javascript:" id="ball" class="ball">拖我</a>
-<script src="src/Inertia.js"></script>
-<script>
-new Inertia(document.getElementById('ball'), {edge: true});
-</script>
+    <div id="outer"></div>
+    <script type="text/javascript" src="./build/react.min.js"></script>
+    <script type="text/javascript" src="./build/react-dom.min.js"></script>
+    <script type="text/javascript" src="./build/app.js"></script>   
 </body>
 </html>
