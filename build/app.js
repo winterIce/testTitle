@@ -157,7 +157,7 @@
 					_react2.default.createElement(
 						'div',
 						{ ref: 'timeOuter', style: this.state.showTime ? {} : { display: 'none' } },
-						_react2.default.createElement(_TimePicker2.default, { okHandler: this.okHandler.bind(this), cancelHandler: this.cancelHandler.bind(this) })
+						_react2.default.createElement(_TimePicker2.default, { okHandler: this.okHandler.bind(this), cancelHandler: this.cancelHandler.bind(this), hour: '8', minute: '30' })
 					)
 				);
 			}
@@ -184,7 +184,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	__webpack_require__(5);
+	var _TimeItem = __webpack_require__(5);
+
+	var _Util = __webpack_require__(6);
+
+	__webpack_require__(7);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -206,482 +210,232 @@
 
 	        var _this = _possibleConstructorReturn(this, (TimePicker.__proto__ || Object.getPrototypeOf(TimePicker)).call(this, props));
 
+	        _this.objTimeArr = [];
+	        _this.touchCurItem = null;
+	        _this.touchMoveY = null; //记录每一帧touchMove的y坐标
+	        _this.touchMoveTime = null; //每帧touchMove事件的时间戳
+	        _this.touchEndTime = null; //记录touchend的时间戳
+	        _this.year = 0;
+	        _this.month = 0;
+	        _this.date = 0;
+	        _this.hour = 0;
+	        _this.minute = 0;
+	        _this.ansTime = ''; //当前时间字符串 2017-03-08 09:00
 	        _this.state = {
-	            curItem: null,
-	            curType: null,
-	            touchStartY: 0,
-	            touchStartTime: 0,
-	            touchMoveY: 0, //记录每一帧touchMove的y坐标
-	            touchEndTime: 0, //记录touchend的时间戳
-
-	            touchMoveTime: 0, //每帧touchMove事件的时间戳
-
-	            touching: false,
-	            objTranslate: {
-	                y: 0
-	            },
-	            objBounding: {
+	            containerBounding: { //time-item的范围
 	                left: 0,
 	                right: 0,
 	                top: 0,
 	                bottom: 0,
 	                width: 0,
 	                height: 0
-	            },
-	            containerBounding: {
-	                left: 0,
-	                right: 0,
-	                top: 0,
-	                bottom: 0,
-	                width: 0,
-	                height: 0
-	            },
-	            moveY: 0, //move过程中的transform-y的值
-	            inertia: false, //是否处于惯性状态
-	            moveYYear: 0,
-	            moveYMonth: 0,
-	            moveYDate: 0,
-	            moveYHour: 0,
-	            moveYMinute: 0,
-
-	            year: 0,
-	            month: 0,
-	            date: 0,
-	            hour: 0,
-	            minute: 0,
-
-	            ansTime: ''
+	            }
 	        };
 	        return _this;
 	    }
 
 	    _createClass(TimePicker, [{
-	        key: 'init',
-	        value: function init() {
-	            var years = [];
-	            for (var i = 2010; i <= 2020; i++) {
-	                years.push('<div class="time-item-content">' + i + '年</div>');
-	            }
-	            this.refs.yearItem.innerHTML = years.join('');
-
-	            var months = [];
-	            for (i = 1; i <= 12; i++) {
-	                months.push('<div class="time-item-content">' + this.addZero(i) + '月</div>');
-	            }
-	            this.refs.monthItem.innerHTML = months.join('');
-
-	            var dates = [];
-	            for (i = 1; i <= 31; i++) {
-	                dates.push('<div class="time-item-content">' + this.addZero(i) + '日</div>');
-	            }
-	            this.refs.dateItem.innerHTML = dates.join('');
-
-	            var hours = [];
-	            for (i = 0; i <= 23; i++) {
-	                hours.push('<div class="time-item-content">' + this.addZero(i) + '时</div>');
-	            }
-	            this.refs.hourItem.innerHTML = hours.join('');
-
-	            var minutes = [];
-	            for (i = 0; i <= 59; i++) {
-	                minutes.push('<div class="time-item-content">' + this.addZero(i) + '分</div>');
-	            }
-	            this.refs.minuteItem.innerHTML = minutes.join('');
-	        }
-	    }, {
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            var d = new Date();
-	            this.setState({
-	                year: d.getFullYear(),
-	                month: d.getMonth() + 1,
-	                date: d.getDate(),
-	                hour: d.getHours(),
-	                minute: d.getMinutes()
-	            });
+	            this.year = this.props.year || d.getFullYear();
+	            this.month = this.props.month || d.getMonth() + 1;
+	            this.date = this.props.date || d.getDate();
+	            this.hour = this.props.hour || d.getHours();
+	            this.minute = this.props.minute || d.getMinutes();
+	            this.setAnsTime();
 	        }
 	    }, {
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            var that = this;
-	            that.init();
-	            var eleArr = [];
-	            eleArr.push(that.refs.yearItemMask);
-	            eleArr.push(that.refs.monthItemMask);
-	            eleArr.push(that.refs.dateItemMask);
-	            eleArr.push(that.refs.hourItemMask);
-	            eleArr.push(that.refs.minuteItemMask);
-	            eleArr.forEach(function (item) {
-	                var itemContent = item.nextSibling.nextSibling;
-	                var type = itemContent.getAttribute('data-type');
-	                var y = 0;
-	                if (type == 'year') {
-	                    y = 34 * (2013 - that.state.year);
-	                    that.moveElement(itemContent, 0, y);
-	                    that.setState({
-	                        moveYYear: y
-	                    });
-	                } else if (type == 'month') {
-	                    y = 34 * (4 - that.state.month);
-	                    that.moveElement(itemContent, 0, y);
-	                    that.setState({
-	                        moveYMonth: y
-	                    });
-	                } else if (type == 'date') {
-	                    y = 34 * (4 - that.state.date);
-	                    that.moveElement(itemContent, 0, y);
-	                    that.setState({
-	                        moveYDate: y
-	                    });
-	                } else if (type == 'hour') {
-	                    y = 34 * (3 - that.state.hour);
-	                    that.moveElement(itemContent, 0, y);
-	                    that.setState({
-	                        moveYHour: y
-	                    });
-	                } else if (type == 'minute') {
-	                    y = 34 * (3 - that.state.minute);
-	                    that.moveElement(itemContent, 0, y);
-	                    that.setState({
-	                        moveYMinute: y
-	                    });
-	                }
-
-	                item.addEventListener('touchstart', function (event) {
-	                    event.preventDefault();
-	                    var evt = event.touches[0] || event;
-	                    var rect = itemContent.getBoundingClientRect();
-
-	                    var container = itemContent.parentNode;
-	                    var containerRect = container.getBoundingClientRect();
-
-	                    that.setState({
-	                        curItem: itemContent,
-	                        curType: itemContent.getAttribute('data-type'),
-	                        touchStartY: evt.pageY,
-	                        touchStartTime: +new Date(),
-	                        touching: true,
-	                        objBounding: {
-	                            left: rect.left,
-	                            right: rect.right,
-	                            top: rect.top,
-	                            bottom: rect.bottom,
-	                            width: rect.width,
-	                            height: rect.height
-	                        },
-	                        containerBounding: {
-	                            left: containerRect.left,
-	                            right: containerRect.right,
-	                            top: containerRect.top,
-	                            bottom: containerRect.bottom,
-	                            width: containerRect.width,
-	                            height: containerRect.height
-	                        }
-	                    });
-	                });
+	            this.refs.shadowLayer.addEventListener('touchstart', function (event) {
+	                event.preventDefault();
+	                that.props.cancelHandler();
 	            });
+	            //初始化外层容器的bouding
+	            var containerRect = this.refs.yearItemMask.parentNode.getBoundingClientRect();
+	            that.setState({
+	                containerBounding: {
+	                    left: containerRect.left,
+	                    right: containerRect.right,
+	                    top: containerRect.top,
+	                    bottom: containerRect.bottom,
+	                    width: containerRect.width,
+	                    height: containerRect.height
+	                }
+	            });
+	            //new年模块
+	            var options = {
+	                startNum: 2010,
+	                endNum: 2020,
+	                unit: '年',
+	                touchStartCallback: function touchStartCallback(item) {
+	                    that.touchCurItem = item;
+	                },
+	                calTimeCallback: function calTimeCallback(val) {
+	                    that.year = val;
+	                    that.calTimeCallback();
+	                }
+	            };
+	            var yearObj = new _TimeItem.TimeItem(that.refs.yearItemMask, options);
+	            yearObj.init(this.year);
+	            this.objTimeArr.push(yearObj);
+	            //new月模块
+	            options = {
+	                startNum: 1,
+	                endNum: 12,
+	                unit: '月',
+	                touchStartCallback: function touchStartCallback(item) {
+	                    that.touchCurItem = item;
+	                },
+	                calTimeCallback: function calTimeCallback(val) {
+	                    that.month = val;
+	                    that.calTimeCallback();
+	                }
+	            };
+	            var monthObj = new _TimeItem.TimeItem(that.refs.monthItemMask, options);
+	            monthObj.init(this.month);
+	            this.objTimeArr.push(monthObj);
+	            //new日模块
+	            options = {
+	                startNum: 1,
+	                endNum: (0, _Util.getDateNumByMonthYear)(this.year, this.month),
+	                unit: '日',
+	                touchStartCallback: function touchStartCallback(item) {
+	                    that.touchCurItem = item;
+	                },
+	                calTimeCallback: function calTimeCallback(val) {
+	                    that.date = val;
+	                    that.setAnsTime();
+	                }
+	            };
+	            var dateObj = new _TimeItem.TimeItem(that.refs.dateItemMask, options);
+	            dateObj.init(this.date);
+	            this.objTimeArr.push(dateObj);
+	            //new小时模块
+	            options = {
+	                startNum: 0,
+	                endNum: 23,
+	                unit: '时',
+	                touchStartCallback: function touchStartCallback(item) {
+	                    that.touchCurItem = item;
+	                },
+	                calTimeCallback: function calTimeCallback(val) {
+	                    that.hour = val;
+	                    that.setAnsTime();
+	                }
+	            };
+	            var hourObj = new _TimeItem.TimeItem(that.refs.hourItemMask, options);
+	            hourObj.init(this.hour);
+	            this.objTimeArr.push(hourObj);
+	            //new分钟模块
+	            options = {
+	                startNum: 0,
+	                endNum: 59,
+	                unit: '分',
+	                touchStartCallback: function touchStartCallback(item) {
+	                    that.touchCurItem = item;
+	                },
+	                calTimeCallback: function calTimeCallback(val) {
+	                    that.minute = val;
+	                    that.setAnsTime();
+	                }
+	            };
+	            var minuteObj = new _TimeItem.TimeItem(that.refs.minuteItemMask, options);
+	            minuteObj.init(this.minute);
+	            this.objTimeArr.push(minuteObj);
 
 	            document.addEventListener('touchmove', function (event) {
-	                if (!that.state.touching) {
+	                if (that.touchCurItem == null) {
 	                    return;
 	                }
 	                event.preventDefault();
 	                var evt = event.touches[0] || event;
-	                that.setState({
-	                    touchMoveY: evt.pageY,
-	                    touchMoveTime: +new Date()
-	                });
 
-	                var moveY = evt.pageY - that.state.touchStartY;
-	                var tempY = 0;
-	                if (that.state.curType == 'year') {
-	                    tempY = that.state.moveYYear + moveY;
-	                } else if (that.state.curType == 'month') {
-	                    tempY = that.state.moveYMonth + moveY;
-	                } else if (that.state.curType == 'date') {
-	                    tempY = that.state.moveYDate + moveY;
-	                } else if (that.state.curType == 'hour') {
-	                    tempY = that.state.moveYHour + moveY;
-	                } else if (that.state.curType == 'minute') {
-	                    tempY = that.state.moveYMinute + moveY;
-	                }
+	                that.touchMoveY = evt.pageY;
+	                that.touchCurItem.setTouchMoveEvtPageY(evt.pageY);
+	                that.touchMoveTime = +new Date();
+
+	                var moveY = evt.pageY - that.touchCurItem.getTouchStartY();
+	                var tempY = that.touchCurItem.getMoveY() + moveY;
 
 	                if (tempY > itemHeight * 6) {
 	                    tempY = itemHeight * 6;
 	                }
-	                if (tempY < -(that.state.objBounding.height - itemHeight)) {
-	                    tempY = -(that.state.objBounding.height - itemHeight);
+	                if (tempY < -(that.touchCurItem.getObjBounding().height - itemHeight)) {
+	                    tempY = -(that.touchCurItem.getObjBounding().height - itemHeight);
 	                }
-	                that.moveElement(that.state.curItem, 0, tempY);
+
+	                that.touchCurItem.moveElement(0, tempY);
 	            });
 
 	            document.addEventListener('touchend', function (event) {
-	                if (!that.state.touching) {
+	                if (that.touchCurItem == null) {
 	                    return;
 	                }
+	                //that.touchCurItem = null;
 	                event.preventDefault();
 	                var evt = event.touches[0] || event;
+	                that.touchEndTime = +new Date();
+	                that.touchCurItem.setTouching(false);
+	                that.touchCurItem.setMoveY();
+	                that.touchCurItem.setInertia(true);
 
-	                that.setState({
-	                    touching: false,
-	                    touchEndTime: +new Date(),
-	                    inertia: true
-	                });
-	                if (that.state.curType == 'year') {
-	                    that.setState({
-	                        moveYYear: that.state.moveY
-	                    });
-	                } else if (that.state.curType == 'month') {
-	                    that.setState({
-	                        moveYMonth: that.state.moveY
-	                    });
-	                } else if (that.state.curType == 'date') {
-	                    that.setState({
-	                        moveYDate: that.state.moveY
-	                    });
-	                } else if (that.state.curType == 'hour') {
-	                    that.setState({
-	                        moveYHour: that.state.moveY
-	                    });
-	                } else if (that.state.curType == 'minute') {
-	                    that.setState({
-	                        moveYMinute: that.state.moveY
-	                    });
-	                }
-
-	                that.inBox(that.state.curItem);
+	                that.touchCurItem.inBox();
 	                //最后一次touchMoveTime和touchEndTime之间超过30ms,意味着停留了长时间,不做滑动
-	                if (that.state.touchEndTime - that.state.touchMoveTime > 30) {
+	                if (that.touchEndTime - that.touchMoveTime > 30) {
+	                    that.touchCurItem = null;
 	                    return;
 	                }
-	                var moveY = that.state.touchMoveY - that.state.touchStartY; //矢量有+-
-	                var time = that.state.touchEndTime - that.state.touchStartTime;
+	                var moveY = that.touchMoveY - that.touchCurItem.getTouchStartY(); //矢量有+-
+	                var time = that.touchEndTime - that.touchCurItem.getTouchStartTime();
 	                var speed = moveY / time * 16.666; //矢量有+-
-	                var rate = Math.min(10, Math.abs(speed)); //加速度a
+	                var rate = Math.min(20, Math.abs(speed)); //加速度a
 
-	                var slide = function slide() {
-	                    if (that.state.touching) {
-	                        that.setState({
-	                            inertia: false
-	                        });
-	                        return;
-	                    }
-	                    if (!that.state.inertia) {
-	                        return;
-	                    }
-	                    speed = speed - speed / rate;
-
-	                    if (that.state.curType == 'year') {
-	                        var y = that.state.moveYYear + speed;
-	                        that.moveElement(that.state.curItem, 0, y);
-	                        that.setState({
-	                            moveYYear: y
-	                        });
-	                    } else if (that.state.curType == 'month') {
-	                        var y = that.state.moveYMonth + speed;
-	                        that.moveElement(that.state.curItem, 0, y);
-	                        that.setState({
-	                            moveYMonth: y
-	                        });
-	                    } else if (that.state.curType == 'date') {
-	                        var y = that.state.moveYDate + speed;
-	                        that.moveElement(that.state.curItem, 0, y);
-	                        that.setState({
-	                            moveYDate: y
-	                        });
-	                    } else if (that.state.curType == 'hour') {
-	                        var y = that.state.moveYHour + speed;
-	                        that.moveElement(that.state.curItem, 0, y);
-	                        that.setState({
-	                            moveYHour: y
-	                        });
-	                    } else if (that.state.curType == 'minute') {
-	                        var y = that.state.moveYMinute + speed;
-	                        that.moveElement(that.state.curItem, 0, y);
-	                        that.setState({
-	                            moveYMinute: y
-	                        });
-	                    }
-
-	                    if (Math.abs(speed) < 0.5) {
-	                        speed = 0;
-	                        that.setState({
-	                            inertia: false
-	                        });
-	                        that.inBox(that.state.curItem);
-	                    } else {
-	                        requestAnimationFrame(slide);
-	                    }
-	                };
-
-	                slide();
-	            });
-
-	            //初始化时间
-	            var time = this.state.year + '-' + this.addZero(this.state.month) + '-' + this.addZero(this.state.date) + ' ' + this.addZero(this.state.hour) + ':' + this.addZero(this.state.minute) + ':' + '00';
-	            this.setState({
-	                ansTime: time
+	                that.touchCurItem.slide(speed, rate);
+	                that.touchCurItem = null;
 	            });
 	        }
 	    }, {
-	        key: 'inBox',
-	        value: function inBox(ele) {
-	            var that = this;
-	            var maxY = 3 * itemHeight;
-	            var minY = -(that.state.objBounding.height - 4 * itemHeight);
-	            var moveY = 0; //delta变化量
-	            var y = 0;
-	            if (that.state.curType == 'year') {
-	                y = that.state.moveYYear;
-	            } else if (that.state.curType == 'month') {
-	                y = that.state.moveYMonth;
-	            } else if (that.state.curType == 'date') {
-	                y = that.state.moveYDate;
-	            } else if (that.state.curType == 'hour') {
-	                y = that.state.moveYHour;
-	            } else if (that.state.curType == 'minute') {
-	                y = that.state.moveYMinute;
-	            }
-
-	            if (y > maxY) {
-	                moveY = maxY - y;
-	            } else if (y < minY) {
-	                moveY = minY - y;
-	            } else {
-	                //调整位置,使时间块位于中间
-	                moveY = Math.ceil(y / itemHeight) * itemHeight - y;
-	            }
-
-	            var start = 0;
-	            var during = 40;
-	            var init = y;
-	            //变化量为0,不用动
-	            if (moveY == 0) {
-	                that.setState({
-	                    inertia: false
-	                });
-	                that.calTime(init);
-	                return;
-	            }
-
-	            var run = function run() {
-	                if (that.state.touching) {
-	                    that.setState({
-	                        inertia: false
-	                    });
-	                    return;
+	        key: 'calTimeCallback',
+	        value: function calTimeCallback() {
+	            if (this.month == 1 || this.month == 3 || this.month == 5 || this.month == 7 || this.month == 8 || this.month == 10 || this.month == 12) {
+	                this.objTimeArr[2].setTimeCount(31);
+	            } else if (this.month == 4 || this.month == 6 || this.month == 9 || this.month == 11) {
+	                this.objTimeArr[2].setTimeCount(30);
+	                if (this.date > 30) {
+	                    this.objTimeArr[2].setTimeVal(30);
+	                    this.objTimeArr[2].setTranslate();
 	                }
-
-	                start++;
-	                var y = that.easeOutQuad(start, init, moveY, during);
-	                that.moveElement(ele, 0, y);
-	                if (that.state.curType == 'year') {
-	                    that.setState({
-	                        moveYYear: y
-	                    });
-	                } else if (that.state.curType == 'month') {
-	                    that.setState({
-	                        moveYMonth: y
-	                    });
-	                } else if (that.state.curType == 'date') {
-	                    that.setState({
-	                        moveYDate: y
-	                    });
-	                } else if (that.state.curType == 'hour') {
-	                    that.setState({
-	                        moveYHour: y
-	                    });
-	                } else if (that.state.curType == 'minute') {
-	                    that.setState({
-	                        moveYMinute: y
-	                    });
-	                }
-
-	                if (start < during) {
-	                    requestAnimationFrame(run);
+	            } else if (this.month == 2) {
+	                if (this.year % 4 == 0 && this.year % 100 != 0 || this.year % 400 == 0) {
+	                    this.objTimeArr[2].setTimeCount(29);
+	                    if (this.date > 29) {
+	                        this.objTimeArr[2].setTimeVal(29);
+	                        this.objTimeArr[2].setTranslate();
+	                    }
 	                } else {
-	                    that.setState({
-	                        inertia: false
-	                    });
-
-	                    that.calTime(y);
+	                    this.objTimeArr[2].setTimeCount(28);
+	                    if (this.date > 28) {
+	                        this.objTimeArr[2].setTimeVal(28);
+	                        this.objTimeArr[2].setTranslate();
+	                    }
 	                }
-	            };
-	            run();
+	            }
+	            this.setAnsTime();
 	        }
 	    }, {
-	        key: 'calTime',
-	        value: function calTime(y) {
-	            var type = this.state.curType;
-	            if (type == 'year') {
-	                this.setState({
-	                    moveYYear: y,
-	                    year: 2013 - y / itemHeight
-	                });
-	            } else if (type == 'month') {
-	                this.setState({
-	                    moveYMonth: y,
-	                    month: 4 - y / itemHeight
-	                });
-	            } else if (type == 'date') {
-	                this.setState({
-	                    moveYDate: y,
-	                    date: 4 - y / itemHeight
-	                });
-	            } else if (type == 'hour') {
-	                this.setState({
-	                    moveYMonth: y,
-	                    hour: 3 - y / itemHeight
-	                });
-	            } else if (type == 'minute') {
-	                this.setState({
-	                    moveYMonth: y,
-	                    minute: 3 - y / itemHeight
-	                });
-	            }
-	            var time = this.state.year + '-' + this.addZero(this.state.month) + '-' + this.addZero(this.state.date) + ' ' + this.addZero(this.state.hour) + ':' + this.addZero(this.state.minute) + ':' + '00';
+	        key: 'setAnsTime',
+	        value: function setAnsTime() {
+	            var time = this.year + '-' + (0, _Util.addZero)(this.month) + '-' + (0, _Util.addZero)(this.date) + ' ' + (0, _Util.addZero)(this.hour) + ':' + (0, _Util.addZero)(this.minute) + ':' + '00';
 	            console.log(time);
-	            this.setState({
-	                ansTime: time
-	            });
-	        }
-	    }, {
-	        key: 'moveElement',
-	        value: function moveElement(ele, x, y) {
-	            var x = Math.round(1000 * x) / 1000;
-	            var y = Math.round(1000 * y) / 1000;
-
-	            ele.style.webkitTransform = 'translate(' + x + 'px,' + y + 'px)';
-	            ele.style.transform = 'translate3d(' + x + 'px,' + y + 'px, 0)';
-	            this.setState({
-	                moveY: y
-	            });
-	        }
-	        // easeOutQuad算法,先慢后快
-	        /*
-	         * t: current time(当前时间)
-	         * b: beginning value(初始值)
-	         * c: change in value(变化量)
-	         * d: duration(持续时间)
-	        **/
-
-	    }, {
-	        key: 'easeOutQuad',
-	        value: function easeOutQuad(t, b, c, d) {
-	            return -c * (t /= d) * (t - 2) + b;
-	        }
-	    }, {
-	        key: 'addZero',
-	        value: function addZero(n) {
-	            if (n < 10) {
-	                return '0' + n;
-	            }
-	            return n;
+	            this.ansTime = time;
 	        }
 	    }, {
 	        key: 'okHandler',
 	        value: function okHandler() {
-	            this.props.okHandler(this.state.ansTime);
+	            this.props.okHandler(this.ansTime);
 	        }
 	    }, {
 	        key: 'render',
@@ -689,7 +443,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement('div', { className: 'shadow-layer' }),
+	                _react2.default.createElement('div', { className: 'shadow-layer', ref: 'shadowLayer' }),
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'time-picker-container' },
@@ -774,15 +528,286 @@
 
 /***/ },
 /* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	function TimeItem(element, options) {
+	    this.element = element;
+	    this.options = options;
+	    this.transformY = 0; //存储style.transform里的y
+	    this.moveY = 0;
+	    this.itemHeight = 34;
+	    this.offset = 3;
+	    this.timeVal = 0;
+	    this.timeMask = null; //遮罩
+	    this.timeContainer = null; //时间内容容器
+	    this.parentContainer = null; //最外层容器
+
+	    this.objBounding = null; //内容容器的bounding
+	    this.touching = false; //是否正在触摸当前滑块
+	    this.touchStartY = 0; //开始触摸时的transformY
+	    this.touchStartTime = 0; //开始触摸的时间
+	    this.inertia = false; //是否惯性滑动
+	    this.touchMoveEvtPageY = 0; //记录touchMove时evt.pageY
+	    this.touchMoveUpDown = null; //touchMove是向上还是向下,1上2下
+	}
+	TimeItem.defaults = {
+	    startNum: '',
+	    endNum: '',
+	    unit: '',
+	    touchStartCallback: function touchStartCallback() {}, //触摸开始时的回调函数
+	    calTimeCallback: function calTimeCallback() {} };
+	TimeItem.prototype = {
+	    init: function init(timeVal) {
+	        this.timeVal = timeVal;
+	        this.timeMask = this.element;
+	        this.timeContainer = this.element.nextSibling.nextSibling;
+	        this.parentContainer = this.element.parentNode;
+	        //this.options = Object.assign({}, TimeItem.defaults, this.options);//支持es6的浏览器才能用
+	        this.renderHtml();
+	        this.setTranslate();
+	        this.touchStartEvt();
+	    },
+	    renderHtml: function renderHtml() {
+	        this.setTimeCount(this.options.endNum);
+	    },
+	    setTimeVal: function setTimeVal(val) {
+	        this.timeVal = val;
+	    },
+
+	    setTranslate: function setTranslate() {
+	        var y = this.itemHeight * (this.options.startNum + this.offset - this.timeVal);
+	        this.moveElement(0, y);
+	        this.moveY = y;
+	    },
+	    moveElement: function moveElement(x, y) {
+	        var x = Math.round(1000 * x) / 1000;
+	        var y = Math.round(1000 * y) / 1000;
+
+	        this.timeContainer.style.webkitTransform = 'translate(' + x + 'px,' + y + 'px)';
+	        this.timeContainer.style.transform = 'translate3d(' + x + 'px,' + y + 'px, 0)';
+	        this.transformY = y;
+	    },
+	    setTouching: function setTouching(touching) {
+	        this.touching = touching;
+	    },
+	    calBounding: function calBounding() {
+	        var rect = this.timeContainer.getBoundingClientRect();
+	        this.objBounding = {
+	            left: rect.left,
+	            right: rect.right,
+	            top: rect.top,
+	            bottom: rect.bottom,
+	            width: rect.width,
+	            height: rect.height
+	        };
+	    },
+	    touchStartEvt: function touchStartEvt() {
+	        var that = this;
+	        this.timeMask.addEventListener('touchstart', function (event) {
+	            event.preventDefault();
+	            event.stopPropagation();
+	            that.calBounding();
+	            var evt = event.touches[0] || event;
+	            that.touching = true;
+	            that.touchStartY = evt.pageY;
+	            that.touchMoveEvtPageY = evt.pageY; //touchMove初始值
+	            that.touchMoveUpDown = 0; //初始值为0
+	            that.touchStartTime = +new Date();
+	            that.options.touchStartCallback(that);
+	        });
+	    },
+	    getTouchStartY: function getTouchStartY() {
+	        return this.touchStartY;
+	    },
+	    getTouchStartTime: function getTouchStartTime() {
+	        return this.touchStartTime;
+	    },
+	    getMoveY: function getMoveY() {
+	        return this.moveY;
+	    },
+	    setMoveY: function setMoveY() {
+	        this.moveY = this.transformY;
+	    },
+	    setTouchMoveEvtPageY: function setTouchMoveEvtPageY(y) {
+	        if (y < this.touchMoveEvtPageY) {
+	            this.touchMoveUpDown = 1; //向上滑
+	        } else {
+	            this.touchMoveUpDown = 2; //向下滑
+	        }
+	        this.touchMoveEvtPageY = y;
+	    },
+	    getObjBounding: function getObjBounding() {
+	        return this.objBounding;
+	    },
+	    setInertia: function setInertia(inertia) {
+	        this.inertia = inertia;
+	    },
+
+	    slide: function slide(speed, rate) {
+	        var that = this;
+	        if (this.touching) {
+	            this.inertia = false;
+	            return;
+	        }
+	        if (!this.inertia) {
+	            return;
+	        }
+
+	        speed = speed - speed / rate;
+
+	        var y = this.moveY + speed;
+	        this.moveElement(0, y);
+	        this.moveY = y;
+
+	        if (Math.abs(speed) < 0.5) {
+	            speed = 0;
+	            this.inertia = false;
+	            this.inBox();
+	        } else {
+	            requestAnimationFrame(function () {
+	                that.slide(speed, rate);
+	            });
+	        }
+	    },
+
+	    inBox: function inBox() {
+	        var maxY = 3 * this.itemHeight;
+	        var minY = -(this.objBounding.height - 4 * this.itemHeight);
+	        var delta = 0; //delta变化量
+	        var y = this.moveY;
+
+	        if (y > maxY) {
+	            delta = maxY - y;
+	        } else if (y < minY) {
+	            delta = minY - y;
+	        } else {
+	            //调整位置,使时间块位于中间
+	            if (this.touchMoveUpDown == 1) {
+	                delta = Math.floor(y / this.itemHeight) * this.itemHeight - y;
+	            } else {
+	                delta = Math.ceil(y / this.itemHeight) * this.itemHeight - y;
+	            }
+	        }
+
+	        var start = 0;
+	        var during = 40;
+	        var init = y;
+	        //变化量为0,不用动
+	        if (delta == 0) {
+	            this.inertia = false;
+
+	            this.calTime(init);
+	            return;
+	        }
+
+	        this.adjust(start, init, delta, during);
+	    },
+
+	    adjust: function adjust(start, init, delta, during) {
+	        var that = this;
+	        if (this.touching) {
+	            this.inertia = false;
+	            return;
+	        }
+
+	        start++;
+	        var y = easeOutQuad(start, init, delta, during);
+	        this.moveElement(0, y);
+	        this.moveY = y;
+
+	        if (start < during) {
+	            requestAnimationFrame(function () {
+	                that.adjust(start, init, delta, during);
+	            });
+	        } else {
+	            this.inertia = false;
+	            this.calTime(y);
+	        }
+	    },
+
+	    calTime: function calTime(y) {
+	        this.moveY = y;
+	        this.timeVal = this.options.startNum + this.offset - y / this.itemHeight;
+	        this.options.calTimeCallback(this.timeVal);
+	    },
+
+	    setTimeCount: function setTimeCount(cnt) {
+	        var content = [];
+	        this.options.endNum = cnt;
+	        for (var i = this.options.startNum; i <= this.options.endNum; i++) {
+	            content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+	        }
+	        this.timeContainer.innerHTML = content.join('');
+	    }
+	};
+
+	function addZero(n) {
+	    if (n < 10) {
+	        return '0' + n;
+	    }
+	    return n;
+	}
+
+	/*
+	 * easeOutQuad算法,先慢后快
+	 * t: current time(当前时间)
+	 * b: beginning value(初始值)
+	 * c: change in value(变化量)
+	 * d: duration(持续时间)
+	**/
+	function easeOutQuad(t, b, c, d) {
+	    return -c * (t /= d) * (t - 2) + b;
+	}
+
+	exports.TimeItem = TimeItem;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function getDateNumByMonthYear(year, month) {
+	  if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+	    return 31;
+	  } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+	    return 30;
+	  } else if (month == 2) {
+	    if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+	      return 29;
+	    } else {
+	      return 28;
+	    }
+	  }
+	}
+	function addZero(n) {
+	  if (n < 10) {
+	    return '0' + n;
+	  }
+	  return n;
+	}
+	exports.getDateNumByMonthYear = getDateNumByMonthYear;
+	exports.addZero = addZero;
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(6);
+	var content = __webpack_require__(8);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(8)(content, {});
+	var update = __webpack_require__(10)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -799,21 +824,21 @@
 	}
 
 /***/ },
-/* 6 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(7)();
+	exports = module.exports = __webpack_require__(9)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"utf-8\";\r\n\r\nhtml, body, div, p, a, span {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n}\r\nhtml, body {\r\n\theight: 100%;\r\n}\r\n.shadow-layer {\r\n\tposition: fixed;\r\n\ttop: 0;\r\n\tbottom: 0;\r\n\tleft: 0;\r\n\tright: 0;\r\n\tz-index: 1;\r\n\tbackground: #000;\r\n    opacity: 0.3;\r\n}\r\n.time-picker-container {\r\n\tdisplay: -webkit-box;\r\n\tdisplay: -ms-flexbox;\r\n\tdisplay: -webkit-flex;\r\n\tdisplay: flex;\r\n\twidth: 100%;\r\n\tposition: fixed;\r\n\tz-index: 2;\r\n\ttop: 50%;\r\n\tmargin-top: -119px;\r\n}\r\n.time-item-container {\r\n\t-webkit-box-flex: 1;\r\n\tflex: 1;\r\n\ttext-align: center;\r\n}\r\n.time-item {\r\n\tdisplay: block;\r\n    position: relative;\r\n    overflow: hidden;\r\n    height: 238px;\r\n}\r\n.time-item-mask {\r\n\tposition: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    z-index: 5;\r\n    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6)), -webkit-linear-gradient(bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));\r\n    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6)), linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));\r\n    background-position: top, bottom;\r\n    background-size: 100% 102px;\r\n    background-repeat: no-repeat;\r\n}\r\n.time-item-contents {\r\n\tposition: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    right: 0;\r\n    z-index: 4;\r\n}\r\n.time-item-content {\r\n\ttext-align: center;\r\n    font-size: 16px;\r\n    line-height: 34px;\r\n    height: 34px;\r\n    color: #000;\r\n    white-space: nowrap;\r\n    text-overflow: ellipsis;\r\n    overflow: hidden;\r\n}\r\n.time-item-middle-bg {\r\n\tposition: absolute;\r\n\tz-index: 3;\r\n\ttop: 102px;\r\n\tleft: 0;\r\n\tright: 0;\r\n\theight: 34px;\r\n\tborder-top: 1px solid #d0d0d0;\r\n\tborder-bottom: 1px solid #d0d0d0;\r\n\tbackground: #fff;\r\n}\r\n.operate-container {\r\n\tposition: absolute;\r\n\tdisplay: -webkit-box;\r\n\tdisplay: -ms-flexbox;\r\n\tdisplay: -webkit-flex;\r\n\tdisplay: flex;\r\n\twidth: 100%;\r\n\tbottom: -42px;\r\n\theight: 40px;\r\n\tbackground: #fff;\r\n\tborder-bottom: 1px solid #d0d0d0;\r\n\tborder-top: 1px solid #d0d0d0;\r\n}\r\n.operate-btn {\r\n\t-webkit-box-flex: 1;\r\n    flex: 1;\r\n    height: 40px;\r\n    line-height: 40px;\r\n    font-size: 16px;\r\n    color: #000;\r\n    text-align: center;\r\n}\r\n.operate-btn:first-child {\r\n\tborder-right: 1px solid #d0d0d0;\r\n}", ""]);
+	exports.push([module.id, "@charset \"utf-8\";\r\n\r\nhtml, body, div, p, a, span {\r\n\tmargin: 0;\r\n\tpadding: 0;\r\n}\r\nhtml, body {\r\n\theight: 100%;\r\n}\r\n.shadow-layer {\r\n\tposition: fixed;\r\n\ttop: 0;\r\n\tbottom: 0;\r\n\tleft: 0;\r\n\tright: 0;\r\n\tz-index: 1;\r\n\tbackground: #000;\r\n    opacity: 0.6;\r\n}\r\n.time-picker-container {\r\n\tdisplay: -webkit-box;\r\n\tdisplay: -ms-flexbox;\r\n\tdisplay: -webkit-flex;\r\n\tdisplay: flex;\r\n\twidth: 100%;\r\n\tposition: fixed;\r\n\tz-index: 2;\r\n\ttop: 50%;\r\n\tmargin-top: -119px;\r\n\tbackground: #fff;\r\n}\r\n.time-item-container {\r\n\t-webkit-box-flex: 1;\r\n\tflex: 1;\r\n\ttext-align: center;\r\n}\r\n.time-item {\r\n\tdisplay: block;\r\n    position: relative;\r\n    overflow: hidden;\r\n    height: 238px;\r\n}\r\n.time-item-mask {\r\n\tposition: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    z-index: 5;\r\n    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6)), -webkit-linear-gradient(bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));\r\n    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6)), linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));\r\n    background-position: top, bottom;\r\n    background-size: 100% 102px;\r\n    background-repeat: no-repeat;\r\n}\r\n.time-item-contents {\r\n\tposition: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    right: 0;\r\n    z-index: 4;\r\n}\r\n.time-item-content {\r\n\ttext-align: center;\r\n    font-size: 16px;\r\n    line-height: 34px;\r\n    height: 34px;\r\n    color: #000;\r\n    white-space: nowrap;\r\n    text-overflow: ellipsis;\r\n    overflow: hidden;\r\n}\r\n.time-item-middle-bg {\r\n\tposition: absolute;\r\n\tz-index: 3;\r\n\ttop: 102px;\r\n\tleft: 0;\r\n\tright: 0;\r\n\theight: 34px;\r\n\tborder-top: 1px solid #d0d0d0;\r\n\tborder-bottom: 1px solid #d0d0d0;\r\n\tbackground: #fff;\r\n}\r\n.operate-container {\r\n\tposition: absolute;\r\n\tdisplay: -webkit-box;\r\n\tdisplay: -ms-flexbox;\r\n\tdisplay: -webkit-flex;\r\n\tdisplay: flex;\r\n\twidth: 100%;\r\n\tbottom: -42px;\r\n\theight: 42px;\r\n\tbackground: #fff;\r\n\tborder-bottom: 1px solid #d0d0d0;\r\n\tborder-top: 1px solid #d0d0d0;\r\n}\r\n.operate-btn {\r\n\t-webkit-box-flex: 1;\r\n    flex: 1;\r\n    height: 40px;\r\n    line-height: 40px;\r\n    font-size: 16px;\r\n    color: #000;\r\n    text-align: center;\r\n}\r\n.operate-btn:first-child {\r\n\tborder-right: 1px solid #d0d0d0;\r\n}", ""]);
 
 	// exports
 
 
 /***/ },
-/* 7 */
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -868,7 +893,7 @@
 	};
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
