@@ -151,7 +151,7 @@ export default class TimePicker extends Component {
             that.touchMoveY = evt.pageY;
             that.touchCurItem.setTouchMoveEvtPageY(evt.pageY);
             that.touchMoveTime = +new Date();
-            
+console.log('move===='+that.touchMoveTime);
             var moveY = evt.pageY - that.touchCurItem.getTouchStartY();
             var tempY = that.touchCurItem.getMoveY() + moveY;
 
@@ -177,7 +177,7 @@ export default class TimePicker extends Component {
             that.touchCurItem.setMoveY();
             that.touchCurItem.setInertia(true);
 
-            
+console.log('end===='+that.touchEndTime);
             //最后一次touchMoveTime和touchEndTime之间超过30ms,意味着停留了长时间,不做滑动
             if(that.touchEndTime - that.touchMoveTime > 30) {
                 console.log(12);
@@ -188,7 +188,7 @@ export default class TimePicker extends Component {
             var moveY = that.touchMoveY - that.touchCurItem.getTouchStartY(); //矢量有+-
             var time = that.touchEndTime - that.touchCurItem.getTouchStartTime();
             var speed = moveY / time * 16.666; //矢量有+-
-            var rate = Math.min(30, Math.abs(speed)); //加速度a
+            var rate = Math.min(20, Math.abs(speed)); //加速度a
 
             that.touchCurItem.slide(speed, rate);
             that.touchCurItem = null;

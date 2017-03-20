@@ -127,6 +127,13 @@ TimeItem.prototype = {
             return;
         }
         
+        if (Math.abs(speed) < 0.5) {
+            speed = 0;
+            this.inertia = false;
+            this.inBox();
+            return;
+        }
+
         speed = speed - speed / rate;
         
         var y = this.moveY + speed;
