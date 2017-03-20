@@ -694,6 +694,7 @@
 	        } else if (y < minY) {
 	            delta = minY - y;
 	        } else {
+	            console.log('updown===' + this.touchMoveUpDown);
 	            //调整位置,使时间块位于中间
 	            if (this.touchMoveUpDown == 1) {
 	                delta = Math.floor(y / this.itemHeight) * this.itemHeight - y;

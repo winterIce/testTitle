@@ -126,7 +126,7 @@ TimeItem.prototype = {
         if(!this.inertia) {
             return;
         }
-        
+
         if (Math.abs(speed) < 0.5) {
             speed = 0;
             this.inertia = false;
@@ -164,6 +164,7 @@ TimeItem.prototype = {
             delta = minY - y;   
         }
         else {
+            console.log('updown===' + this.touchMoveUpDown);
             //调整位置,使时间块位于中间
             if(this.touchMoveUpDown == 1) {
                 delta = Math.floor(y / this.itemHeight) * this.itemHeight - y;
