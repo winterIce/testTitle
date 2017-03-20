@@ -354,9 +354,10 @@
 	                var evt = event.touches[0] || event;
 
 	                that.touchMoveY = evt.pageY;
+	                console.log('move====' + evt.pageY);
 	                that.touchCurItem.setTouchMoveEvtPageY(evt.pageY);
 	                that.touchMoveTime = +new Date();
-	                console.log('move====' + evt.pageY);
+
 	                var moveY = evt.pageY - that.touchCurItem.getTouchStartY();
 	                var tempY = that.touchCurItem.getMoveY() + moveY;
 
