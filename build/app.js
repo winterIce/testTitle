@@ -638,7 +638,7 @@
 	        console.log(y + '==set==' + this.touchMoveEvtPageY);
 	        if (y < this.touchMoveEvtPageY) {
 	            this.touchMoveUpDown = 1; //向上滑
-	        } else {
+	        } else if (y > this.touchMoveEvtPageY) {
 	            this.touchMoveUpDown = 2; //向下滑
 	        }
 	        this.touchMoveEvtPageY = y;
