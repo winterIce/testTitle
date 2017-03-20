@@ -177,9 +177,9 @@ export default class TimePicker extends Component {
             that.touchCurItem.setMoveY();
             that.touchCurItem.setInertia(true);
 
-            that.touchCurItem.inBox();
             //最后一次touchMoveTime和touchEndTime之间超过30ms,意味着停留了长时间,不做滑动
             if(that.touchEndTime - that.touchMoveTime > 30) {
+                that.touchCurItem.inBox();
                 that.touchCurItem = null;
                 return;
             }
