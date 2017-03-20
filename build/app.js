@@ -384,6 +384,7 @@
 
 	                //最后一次touchMoveTime和touchEndTime之间超过30ms,意味着停留了长时间,不做滑动
 	                if (that.touchEndTime - that.touchMoveTime > 30) {
+	                    console.log(12);
 	                    that.touchCurItem.inBox();
 	                    that.touchCurItem = null;
 	                    return;
@@ -391,7 +392,7 @@
 	                var moveY = that.touchMoveY - that.touchCurItem.getTouchStartY(); //矢量有+-
 	                var time = that.touchEndTime - that.touchCurItem.getTouchStartTime();
 	                var speed = moveY / time * 16.666; //矢量有+-
-	                var rate = Math.min(20, Math.abs(speed)); //加速度a
+	                var rate = Math.min(10, Math.abs(speed)); //加速度a
 
 	                that.touchCurItem.slide(speed, rate);
 	                that.touchCurItem = null;
