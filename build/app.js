@@ -378,6 +378,7 @@
 	                event.preventDefault();
 	                var evt = event.touches[0] || event;
 	                that.touchEndTime = +new Date();
+	                that.touchCurItem.setTouchMoveEvtPageY(evt.pageY);
 	                that.touchCurItem.setTouching(false);
 	                that.touchCurItem.setMoveY();
 	                that.touchCurItem.setInertia(true);
