@@ -356,7 +356,7 @@
 	                that.touchMoveY = evt.pageY;
 	                that.touchCurItem.setTouchMoveEvtPageY(evt.pageY);
 	                that.touchMoveTime = +new Date();
-
+	                console.log('move====' + evt.pageY);
 	                var moveY = evt.pageY - that.touchCurItem.getTouchStartY();
 	                var tempY = that.touchCurItem.getMoveY() + moveY;
 
@@ -382,7 +382,7 @@
 	                that.touchCurItem.setTouching(false);
 	                that.touchCurItem.setMoveY();
 	                that.touchCurItem.setInertia(true);
-
+	                console.log('end====' + evt.pageY);
 	                //最后一次touchMoveTime和touchEndTime之间超过30ms,意味着停留了长时间,不做滑动
 	                //pc模拟器能走到以下分支.但是真机几乎不可能的,真机的touchend之前几毫秒有一个touchmove事件，只有极少几率走到以下分支，可以忽略不计
 	                if (that.touchEndTime - that.touchMoveTime > 30) {
