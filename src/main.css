@@ -1,0 +1,108 @@
+@charset "utf-8";
+
+html, body, div, p, a, span {
+	margin: 0;
+	padding: 0;
+}
+html, body {
+	height: 100%;
+}
+.shadow-layer {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	background: #000;
+    opacity: 0.6;
+}
+.time-picker-container {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	width: 100%;
+	position: fixed;
+	z-index: 2;
+	top: 50%;
+	margin-top: -119px;
+	background: #fff;
+}
+.time-item-container {
+	-webkit-box-flex: 1;
+	flex: 1;
+	text-align: center;
+}
+.time-item {
+	display: block;
+    position: relative;
+    overflow: hidden;
+    height: 238px;
+}
+.time-item-mask {
+	position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6)), -webkit-linear-gradient(bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6)), linear-gradient(to top, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));
+    background-position: top, bottom;
+    background-size: 100% 102px;
+    background-repeat: no-repeat;
+}
+.time-item-contents {
+	position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: 4;
+}
+.time-item-content {
+	text-align: center;
+    font-size: 16px;
+    line-height: 34px;
+    height: 34px;
+    color: #000;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.time-item-middle-bg {
+	position: absolute;
+	z-index: 3;
+	top: 102px;
+	left: 0;
+	right: 0;
+	height: 34px;
+	border-top: 1px solid #d0d0d0;
+	border-bottom: 1px solid #d0d0d0;
+	background: #fff;
+}
+.operate-container {
+	position: absolute;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	width: 100%;
+	bottom: -42px;
+	height: 42px;
+	background: #fff;
+	border-bottom: 1px solid #d0d0d0;
+	border-top: 1px solid #d0d0d0;
+}
+.operate-btn {
+	-webkit-box-flex: 1;
+    flex: 1;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    color: #000;
+    text-align: center;
+}
+.operate-btn:first-child {
+	border-right: 1px solid #d0d0d0;
+}
