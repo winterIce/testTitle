@@ -101,6 +101,7 @@ TimeItem.prototype = {
         this.moveY = this.transformY;
     },
     setTouchMoveEvtPageY: function(y) {
+        console.log(y+'==set=='+this.touchMoveEvtPageY);
         if(y < this.touchMoveEvtPageY) {
             this.touchMoveUpDown = 1;//向上滑
         }
