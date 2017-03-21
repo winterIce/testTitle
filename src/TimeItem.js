@@ -101,7 +101,6 @@ TimeItem.prototype = {
         this.moveY = this.transformY;
     },
     setTouchMoveEvtPageY: function(y) {
-        console.log(y+'==set=='+this.touchMoveEvtPageY);
         if(y < this.touchMoveEvtPageY) {
             this.touchMoveUpDown = 1;//向上滑
         }
@@ -165,7 +164,6 @@ TimeItem.prototype = {
             delta = minY - y;   
         }
         else {
-            console.log('updown===' + this.touchMoveUpDown);
             //调整位置,使时间块位于中间
             if(this.touchMoveUpDown == 1) {
                 delta = Math.floor(y / this.itemHeight) * this.itemHeight - y;

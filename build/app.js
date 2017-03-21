@@ -354,7 +354,7 @@
 	                var evt = event.touches[0] || event;
 
 	                that.touchMoveY = evt.pageY;
-	                console.log('move====' + evt.pageY);
+
 	                that.touchCurItem.setTouchMoveEvtPageY(evt.pageY);
 	                that.touchMoveTime = +new Date();
 
@@ -636,7 +636,6 @@
 	        this.moveY = this.transformY;
 	    },
 	    setTouchMoveEvtPageY: function setTouchMoveEvtPageY(y) {
-	        console.log(y + '==set==' + this.touchMoveEvtPageY);
 	        if (y < this.touchMoveEvtPageY) {
 	            this.touchMoveUpDown = 1; //向上滑
 	        } else if (y > this.touchMoveEvtPageY) {
@@ -696,7 +695,6 @@
 	        } else if (y < minY) {
 	            delta = minY - y;
 	        } else {
-	            console.log('updown===' + this.touchMoveUpDown);
 	            //调整位置,使时间块位于中间
 	            if (this.touchMoveUpDown == 1) {
 	                delta = Math.floor(y / this.itemHeight) * this.itemHeight - y;

@@ -149,7 +149,7 @@ export default class TimePicker extends Component {
             var evt = event.touches[0] || event;
 
             that.touchMoveY = evt.pageY;
-console.log('move====' + evt.pageY);
+
             that.touchCurItem.setTouchMoveEvtPageY(evt.pageY);
             that.touchMoveTime = +new Date();
 
