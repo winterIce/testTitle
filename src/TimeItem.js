@@ -165,12 +165,13 @@ TimeItem.prototype = {
         }
         else {
             //调整位置,使时间块位于中间
-            if(this.touchMoveUpDown == 1) {
-                delta = Math.floor(y / this.itemHeight) * this.itemHeight - y;
-            }
-            else {
-                delta = Math.ceil(y / this.itemHeight) * this.itemHeight - y;    
-            }
+            // if(this.touchMoveUpDown == 1) {
+            //     delta = Math.floor(y / this.itemHeight) * this.itemHeight - y;
+            // }
+            // else {
+            //     delta = Math.ceil(y / this.itemHeight) * this.itemHeight - y;    
+            // }
+            delta = Math.round(y / this.itemHeight) * this.itemHeight - y;
         }
 
         var start = 0;
