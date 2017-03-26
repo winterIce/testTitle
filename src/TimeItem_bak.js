@@ -6,6 +6,8 @@ function TimeItem(element, options) {
     this.itemHeight = 34;
     this.offset = 3;
     this.timeVal = 0;
+    this.startTimeVal = 0;//循环块的开始
+    this.endTimeVal = 0;//循环块的结束
     this.timeMask = null;//遮罩
     this.timeContainer = null;//时间内容容器
     this.parentContainer = null;//最外层容器
@@ -217,12 +219,31 @@ TimeItem.prototype = {
     },
 
     setTimeCount: function(cnt) {
-        var content = [];
-        this.options.endNum = cnt;
-        for(var i = this.options.startNum; i <= this.options.endNum; i++) {
-            content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+        // var content = [];
+        // this.options.endNum = cnt;
+        // for(var i = this.options.startNum; i <= this.options.endNum; i++) {
+        //     content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+        // }
+        // this.timeContainer.innerHTML = content.join('');
+
+        this.startTimeVal = (this.timeVal - 4 >= this.options.startNum) ? this.timeVal - 4 : this.options.endNum + 1 + (4 - (this.timeVal - this.options.startNum));
+        this.endTimeVal = (this.timeVal + 4 <= this.options.endNum) ? this.timeVal + 4 : (this.options.startNum - 1) + (4 - (this.options.endNum - this.timeVal));
+        var content = [], i;
+        if(this.startTimeVal < this.endTimeVal) {
+            for(i = this.startTimeVal; i <= this.endTimeVal; i++) {
+                content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+            }
+        }
+        else {
+            for(i = this.startTimeVal; i <= this.options.endNum; i++) {
+                content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+            }
+            for(i = this.options.startNum; i <= this.endTimeVal; i++) {
+                content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+            }
         }
         this.timeContainer.innerHTML = content.join('');
+        
     },
 }
 
