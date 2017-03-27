@@ -238,11 +238,11 @@
 	        key: 'componentWillMount',
 	        value: function componentWillMount() {
 	            var d = new Date();
-	            this.year = this.props.year || d.getFullYear();
-	            this.month = this.props.month || d.getMonth() + 1;
-	            this.date = this.props.date || d.getDate();
-	            this.hour = this.props.hour || d.getHours();
-	            this.minute = this.props.minute || d.getMinutes();
+	            this.year = parseInt(this.props.year) || d.getFullYear();
+	            this.month = parseInt(this.props.month) || d.getMonth() + 1;
+	            this.date = parseInt(this.props.date) || d.getDate();
+	            this.hour = parseInt(this.props.hour) || d.getHours();
+	            this.minute = parseInt(this.props.minute) || d.getMinutes();
 	            this.setAnsTime();
 	        }
 	    }, {
@@ -545,6 +545,8 @@
 	    this.itemHeight = 34;
 	    this.offset = 3;
 	    this.timeVal = 0;
+	    this.startTimeVal = 0; //循环块的开始
+	    this.endTimeVal = 0; //循环块的结束
 	    this.timeMask = null; //遮罩
 	    this.timeContainer = null; //时间内容容器
 	    this.parentContainer = null; //最外层容器
@@ -572,7 +574,7 @@
 	        //this.options = Object.assign({}, TimeItem.defaults, this.options);//支持es6的浏览器才能用
 	        this.renderHtml();
 	        this.setTranslate();
-	        this.touchStartEvt();
+	        //this.touchStartEvt();
 	    },
 	    renderHtml: function renderHtml() {
 	        this.setTimeCount(this.options.endNum);
@@ -582,9 +584,12 @@
 	    },
 
 	    setTranslate: function setTranslate() {
-	        var y = this.itemHeight * (this.options.startNum + this.offset - this.timeVal);
-	        this.moveElement(0, y);
-	        this.moveY = y;
+	        // var y = this.itemHeight * (this.options.startNum + this.offset - this.timeVal);
+	        // this.moveElement(0, y);
+	        // this.moveY = y;
+
+	        this.moveElement(0, -this.itemHeight);
+	        this.moveY = -this.itemHeight;
 	    },
 	    moveElement: function moveElement(x, y) {
 	        var x = Math.round(1000 * x) / 1000;
@@ -748,10 +753,29 @@
 	    },
 
 	    setTimeCount: function setTimeCount(cnt) {
-	        var content = [];
-	        this.options.endNum = cnt;
-	        for (var i = this.options.startNum; i <= this.options.endNum; i++) {
-	            content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+	        // var content = [];
+	        // this.options.endNum = cnt;
+	        // for(var i = this.options.startNum; i <= this.options.endNum; i++) {
+	        //     content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+	        // }
+	        // this.timeContainer.innerHTML = content.join('');
+
+	        this.startTimeVal = this.timeVal - 4 >= this.options.startNum ? this.timeVal - 4 : this.options.endNum + 1 - (4 - (this.timeVal - this.options.startNum));
+	        this.endTimeVal = this.timeVal + 4 <= this.options.endNum ? this.timeVal + 4 : this.options.startNum - 1 + (4 - (this.options.endNum - this.timeVal));
+
+	        var content = [],
+	            i;
+	        if (this.startTimeVal < this.endTimeVal) {
+	            for (i = this.startTimeVal; i <= this.endTimeVal; i++) {
+	                content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+	            }
+	        } else {
+	            for (i = this.startTimeVal; i <= this.options.endNum; i++) {
+	                content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+	            }
+	            for (i = this.options.startNum; i <= this.endTimeVal; i++) {
+	                content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
+	            }
 	        }
 	        this.timeContainer.innerHTML = content.join('');
 	    }

@@ -35,11 +35,11 @@ export default class TimePicker extends Component {
 
     componentWillMount() {
         var d = new Date();
-        this.year = this.props.year || d.getFullYear();
-        this.month = this.props.month || d.getMonth() + 1;
-        this.date = this.props.date || d.getDate();
-        this.hour = this.props.hour || d.getHours();
-        this.minute = this.props.minute || d.getMinutes();
+        this.year = parseInt(this.props.year) || d.getFullYear();
+        this.month = parseInt(this.props.month) || d.getMonth() + 1;
+        this.date = parseInt(this.props.date) || d.getDate();
+        this.hour = parseInt(this.props.hour) || d.getHours();
+        this.minute = parseInt(this.props.minute) || d.getMinutes();
         this.setAnsTime();
     }
 	componentDidMount() {
