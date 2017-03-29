@@ -579,7 +579,6 @@
 	        this.touchStartEvt();
 	    },
 	    renderHtml: function renderHtml() {
-	        console.log(this.timeVal);
 	        this.setTimeCount();
 	    },
 	    setTimeVal: function setTimeVal(val) {

@@ -45,7 +45,6 @@ TimeItem.prototype = {
         this.touchStartEvt();
     },
     renderHtml: function() {
-        console.log(this.timeVal);
         this.setTimeCount();
     },
     setTimeVal(val) {
