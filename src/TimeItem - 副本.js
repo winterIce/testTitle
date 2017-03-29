@@ -19,8 +19,6 @@ function TimeItem(element, options) {
     this.inertia = false;//是否惯性滑动
     this.touchMoveEvtPageY = 0;//记录touchMove时evt.pageY
     this.touchMoveUpDown = null;//touchMove是向上还是向下,1上2下
-
-    this.tempTimeVal = 0;
 }
 TimeItem.defaults = {
     startNum: '',
@@ -42,10 +40,9 @@ TimeItem.prototype = {
         //this.options = Object.assign({}, TimeItem.defaults, this.options);//支持es6的浏览器才能用
         this.renderHtml();
         this.setTranslate();
-        this.touchStartEvt();
+        //this.touchStartEvt();
     },
     renderHtml: function() {
-        console.log(this.timeVal);
         this.setTimeCount();
     },
     setTimeVal(val) {
@@ -56,42 +53,16 @@ TimeItem.prototype = {
         // this.moveElement(0, y);
         // this.moveY = y;
 
-        //this.moveElement(0, -this.itemHeight);
-        //this.moveY = -this.itemHeight;
-        var y = -this.itemHeight;
-        this.timeContainer.style.webkitTransform = 'translate(' + 0 + 'px,' + y + 'px)';
-        this.timeContainer.style.transform = 'translate3d(' + 0 + 'px,' + y + 'px, 0)';
-        this.transformY = y;
-        this.moveY = y;
+        this.moveElement(0, -this.itemHeight);
+        this.moveY = -this.itemHeight;
     },
     moveElement: function(x, y) {
         var x = Math.round(1000 * x) / 1000;
         var y = Math.round(1000 * y) / 1000;
-        ///////
-        var ty = (y - (-this.itemHeight)) / this.itemHeight;
-        if(ty < 0) {
-            ty = Math.ceil(ty);
-        }
-        else if (ty > 0){
-            ty = Math.floor(ty);
-        }
-        y = y - ty * this.itemHeight;
-        var mod = ty % (this.options.endNum - this.options.startNum + 1);
-        if(this.timeVal - mod < this.options.startNum) {
-            this.timeVal = this.options.endNum + 1 - (Math.abs(mod) - (this.timeVal - this.options.startNum));
-        }
-        else if(this.timeVal - mod > this.options.endNum) {
-            this.timeVal = this.options.startNum - 1 + (Math.abs(mod) - (this.options.endNum - this.timeVal));
-        }
-        else {
-            this.timeVal = this.timeVal - mod;
-        }
-        this.setTimeCount();
-//////
+
         this.timeContainer.style.webkitTransform = 'translate(' + x + 'px,' + y + 'px)';
         this.timeContainer.style.transform = 'translate3d(' + x + 'px,' + y + 'px, 0)';
         this.transformY = y;
-        this.moveY = y;
     },
     moveElement2(x, y) {
         var x = Math.round(1000 * x) / 1000;
@@ -101,20 +72,11 @@ TimeItem.prototype = {
         if(ty < 0) {
             ty = Math.ceil(ty);
         }
-        else if (ty > 0){
+        else {
             ty = Math.floor(ty);
         }
         y = y - ty * this.itemHeight;
-        var mod = ty % (this.options.endNum - this.options.startNum + 1);
-        if(this.tempTimeVal - mod < this.options.startNum) {
-            this.timeVal = this.options.endNum + 1 - (Math.abs(mod) - (this.tempTimeVal - this.options.startNum));
-        }
-        else if(this.tempTimeVal - mod > this.options.endNum) {
-            this.timeVal = this.options.startNum - 1 + (Math.abs(mod) - (this.options.endNum - this.tempTimeVal));
-        }
-        else {
-            this.timeVal = this.tempTimeVal - mod;
-        }
+        this.timeVal = this.timeVal - ty;
         this.setTimeCount();
         this.timeContainer.style.webkitTransform = 'translate(' + x + 'px,' + y + 'px)';
         this.timeContainer.style.transform = 'translate3d(' + x + 'px,' + y + 'px, 0)';
@@ -147,8 +109,6 @@ TimeItem.prototype = {
             that.touchMoveUpDown = 0;//初始值为0
             that.touchStartTime = +new Date();
             that.options.touchStartCallback(that);
-
-            that.tempTimeVal = that.timeVal;
         });
     },
     getTouchStartY: function() {
@@ -201,7 +161,7 @@ TimeItem.prototype = {
         
         var y = this.moveY + speed;
         this.moveElement(0, y);
-        //this.moveY = y;
+        this.moveY = y;
 
         if (Math.abs(speed) < 0.5) {
             speed = 0;
@@ -261,7 +221,7 @@ TimeItem.prototype = {
         start++;
         var y = easeOutQuad(start, init, delta, during);
         this.moveElement(0, y);
-        //this.moveY = y;
+        this.moveY = y;
 
         if (start < during) {
             requestAnimationFrame(function() {
@@ -275,47 +235,29 @@ TimeItem.prototype = {
 
     calTime: function(y) {
         this.moveY = y;
-        //this.timeVal = this.options.startNum + this.offset - y / this.itemHeight;
+        this.timeVal = this.options.startNum + this.offset - y / this.itemHeight;
         this.options.calTimeCallback(this.timeVal);
     },
+
     setTimeCount: function() {
         this.startTimeVal = (this.timeVal - 4 >= this.options.startNum) ? this.timeVal - 4 : this.options.endNum + 1 - (4 - (this.timeVal - this.options.startNum));
         this.endTimeVal = (this.timeVal + 4 <= this.options.endNum) ? this.timeVal + 4 : (this.options.startNum - 1) + (4 - (this.options.endNum - this.timeVal));
 
-        var content = [], i, j;
-        var nodes = this.timeContainer.childNodes;
-        if(nodes.length == 0) {
-            if(this.startTimeVal < this.endTimeVal) {
-                for(i = this.startTimeVal; i <= this.endTimeVal; i++) {
-                    content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
-                }
+        var content = [], i;
+        if(this.startTimeVal < this.endTimeVal) {
+            for(i = this.startTimeVal; i <= this.endTimeVal; i++) {
+                content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
             }
-            else {
-                for(i = this.startTimeVal; i <= this.options.endNum; i++) {
-                    content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
-                }
-                for(i = this.options.startNum; i <= this.endTimeVal; i++) {
-                    content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
-                }
-            }
-            this.timeContainer.innerHTML = content.join('');
         }
         else {
-            j = 0;
-            if(this.startTimeVal < this.endTimeVal) {
-                for(i = this.startTimeVal; i <= this.endTimeVal; i++) {
-                    nodes[j++].innerHTML = addZero(i) + this.options.unit;
-                }
+            for(i = this.startTimeVal; i <= this.options.endNum; i++) {
+                content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
             }
-            else {
-                for(i = this.startTimeVal; i <= this.options.endNum; i++) {
-                    nodes[j++].innerHTML = addZero(i) + this.options.unit;
-                }
-                for(i = this.options.startNum; i <= this.endTimeVal; i++) {
-                    nodes[j++].innerHTML = addZero(i) + this.options.unit;
-                }
+            for(i = this.options.startNum; i <= this.endTimeVal; i++) {
+                content.push('<div class="time-item-content">' + addZero(i) + this.options.unit + '</div>');
             }
         }
+        this.timeContainer.innerHTML = content.join('');
     },
 }
 

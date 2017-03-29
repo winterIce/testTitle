@@ -156,14 +156,14 @@ export default class TimePicker extends Component {
             var moveY = evt.pageY - that.touchCurItem.getTouchStartY();
             var tempY = that.touchCurItem.getMoveY() + moveY;
 
-            if(tempY > itemHeight * 6) {
-                tempY = itemHeight * 6;
-            }
-            if(tempY < -(that.touchCurItem.getObjBounding().height - itemHeight) ) {
-                tempY = -(that.touchCurItem.getObjBounding().height - itemHeight);
-            }
-
-            that.touchCurItem.moveElement(0, tempY);
+            // if(tempY > itemHeight * 6) {
+            //     tempY = itemHeight * 6;
+            // }
+            // if(tempY < -(that.touchCurItem.getObjBounding().height - itemHeight) ) {
+            //     tempY = -(that.touchCurItem.getObjBounding().height - itemHeight);
+            // }
+            
+            that.touchCurItem.moveElement2(0, tempY);
         });
         
         document.addEventListener('touchend', function(event) {
