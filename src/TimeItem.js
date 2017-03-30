@@ -50,6 +50,12 @@ TimeItem.prototype = {
     setTimeVal(val) {
         this.timeVal = val;
     },
+    setStartNum(v) {
+        this.options.startNum = v;
+    },
+    setEndNum(v) {
+        this.options.endNum = v;
+    },
     setTranslate: function() {
         // var y = this.itemHeight * (this.options.startNum + this.offset - this.timeVal);
         // this.moveElement(0, y);
