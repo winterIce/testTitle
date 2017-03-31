@@ -97,8 +97,10 @@ TimeItem.prototype = {
         this.timeContainer.style.transform = 'translate3d(' + x + 'px,' + y + 'px, 0)';
         this.transformY = y;
         this.moveY = y;
+        console.log(y);
     },
     moveElement2(x, y) {
+        console.log('move2====' + y);
         var x = Math.round(1000 * x) / 1000;
         var y = Math.round(1000 * y) / 1000;
 

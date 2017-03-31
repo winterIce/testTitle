@@ -209,6 +209,7 @@ export default class TimePicker extends Component {
             this.objTimeArr[2].setEndNum(30);
             if(this.date > 30) {
                 this.objTimeArr[2].setTimeVal(30);
+                this.date = 30;
             }
             this.objTimeArr[2].setTimeCount();
         }
@@ -222,6 +223,7 @@ export default class TimePicker extends Component {
                 this.objTimeArr[2].setEndNum(29);
                 if(this.date > 29) {
                     this.objTimeArr[2].setTimeVal(29);
+                    this.date = 29;
                 }
                 this.objTimeArr[2].setTimeCount();
             }
@@ -234,6 +236,7 @@ export default class TimePicker extends Component {
                 this.objTimeArr[2].setEndNum(28);
                 if(this.date > 28) {
                     this.objTimeArr[2].setTimeVal(28);
+                    this.date = 28;
                 }
                 this.objTimeArr[2].setTimeCount();
             }
