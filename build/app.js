@@ -652,7 +652,7 @@
 	        console.log(y);
 	    },
 	    moveElement2: function moveElement2(x, y) {
-	        console.log('move2====' + y);
+	        //console.log('move2====' + y);
 	        var x = Math.round(1000 * x) / 1000;
 	        var y = Math.round(1000 * y) / 1000;
 
@@ -706,6 +706,8 @@
 	            that.options.touchStartCallback(that);
 
 	            that.tempTimeVal = that.timeVal;
+	            that.moveY = -that.itemHeight;
+	            console.log('start==' + that.moveY);
 	        });
 	    },
 	    getTouchStartY: function getTouchStartY() {
