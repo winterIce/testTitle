@@ -203,6 +203,7 @@ export default class TimePicker extends Component {
             if(this.date > 30) {
                 this.objTimeArr[2].setTimeVal(30);
                 this.objTimeArr[2].setTranslate();
+                this.date = 30;
             }
         }
         else if(this.month == 2){
@@ -211,6 +212,7 @@ export default class TimePicker extends Component {
                 if(this.date > 29) {
                     this.objTimeArr[2].setTimeVal(29);
                     this.objTimeArr[2].setTranslate();
+                    this.date = 29;
                 }
             }
             else {
@@ -218,6 +220,7 @@ export default class TimePicker extends Component {
                 if(this.date > 28) {
                     this.objTimeArr[2].setTimeVal(28);
                     this.objTimeArr[2].setTranslate();
+                    this.date = 28;
                 }
             }
         }    
