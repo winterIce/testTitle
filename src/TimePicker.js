@@ -150,18 +150,10 @@ export default class TimePicker extends Component {
 
             that.touchMoveY = evt.pageY;
 
-            that.touchCurItem.setTouchMoveEvtPageY(evt.pageY);
             that.touchMoveTime = +new Date();
 
             var moveY = evt.pageY - that.touchCurItem.getTouchStartY();
             var tempY = that.touchCurItem.getMoveY() + moveY;
-
-            // if(tempY > itemHeight * 6) {
-            //     tempY = itemHeight * 6;
-            // }
-            // if(tempY < -(that.touchCurItem.getObjBounding().height - itemHeight) ) {
-            //     tempY = -(that.touchCurItem.getObjBounding().height - itemHeight);
-            // }
             
             that.touchCurItem.moveElement2(0, tempY);
         });
@@ -196,16 +188,10 @@ export default class TimePicker extends Component {
 	}
     calTimeCallback() {
         if(this.month == 1 || this.month == 3 || this.month == 5 || this.month == 7 || this.month == 8 || this.month == 10 || this.month == 12) {
-            //this.objTimeArr[2].setTimeCount(31);
             this.objTimeArr[2].setEndNum(31);
             this.objTimeArr[2].setTimeCount();
         }
         else if(this.month == 4 || this.month == 6 || this.month == 9 || this.month == 11) {
-            // this.objTimeArr[2].setTimeCount(30);
-            // if(this.date > 30) {
-            //     this.objTimeArr[2].setTimeVal(30);
-            //     this.objTimeArr[2].setTranslate();
-            // }
             this.objTimeArr[2].setEndNum(30);
             if(this.date > 30) {
                 this.objTimeArr[2].setTimeVal(30);
@@ -215,11 +201,6 @@ export default class TimePicker extends Component {
         }
         else if(this.month == 2){
             if( (this.year % 4 == 0) && (this.year % 100 != 0) || (this.year % 400 == 0) ) {
-                // this.objTimeArr[2].setTimeCount(29);
-                // if(this.date > 29) {
-                //     this.objTimeArr[2].setTimeVal(29);
-                //     this.objTimeArr[2].setTranslate();
-                // }
                 this.objTimeArr[2].setEndNum(29);
                 if(this.date > 29) {
                     this.objTimeArr[2].setTimeVal(29);
@@ -228,11 +209,6 @@ export default class TimePicker extends Component {
                 this.objTimeArr[2].setTimeCount();
             }
             else {
-                // this.objTimeArr[2].setTimeCount(28);
-                // if(this.date > 28) {
-                //     this.objTimeArr[2].setTimeVal(28);
-                //     this.objTimeArr[2].setTranslate();
-                // }
                 this.objTimeArr[2].setEndNum(28);
                 if(this.date > 28) {
                     this.objTimeArr[2].setTimeVal(28);

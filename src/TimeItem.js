@@ -17,8 +17,6 @@ function TimeItem(element, options) {
     this.touchStartY = 0;//开始触摸时的transformY
     this.touchStartTime = 0;//开始触摸的时间
     this.inertia = false;//是否惯性滑动
-    this.touchMoveEvtPageY = 0;//记录touchMove时evt.pageY
-    this.touchMoveUpDown = null;//touchMove是向上还是向下,1上2下
 
     this.tempTimeVal = 0;
 }
@@ -57,12 +55,6 @@ TimeItem.prototype = {
         this.options.endNum = v;
     },
     setTranslate: function() {
-        // var y = this.itemHeight * (this.options.startNum + this.offset - this.timeVal);
-        // this.moveElement(0, y);
-        // this.moveY = y;
-
-        //this.moveElement(0, -this.itemHeight);
-        //this.moveY = -this.itemHeight;
         var y = -this.itemHeight;
         this.timeContainer.style.webkitTransform = 'translate(' + 0 + 'px,' + y + 'px)';
         this.timeContainer.style.transform = 'translate3d(' + 0 + 'px,' + y + 'px, 0)';
@@ -97,10 +89,8 @@ TimeItem.prototype = {
         this.timeContainer.style.transform = 'translate3d(' + x + 'px,' + y + 'px, 0)';
         this.transformY = y;
         this.moveY = y;
-        console.log(y);
     },
     moveElement2(x, y) {
-        //console.log('move2====' + y);
         var x = Math.round(1000 * x) / 1000;
         var y = Math.round(1000 * y) / 1000;
 
@@ -150,14 +140,9 @@ TimeItem.prototype = {
             var evt = event.touches[0] || event;
             that.touching = true;
             that.touchStartY = evt.pageY;
-            that.touchMoveEvtPageY = evt.pageY;//touchMove初始值
-            that.touchMoveUpDown = 0;//初始值为0
             that.touchStartTime = +new Date();
             that.options.touchStartCallback(that);
-
             that.tempTimeVal = that.timeVal;
-            that.moveY = -that.itemHeight;
-            console.log('start==' + that.moveY);
         });
     },
     getTouchStartY: function() {
@@ -171,16 +156,6 @@ TimeItem.prototype = {
     },
     setMoveY: function() {
         this.moveY = this.transformY;
-    },
-    setTouchMoveEvtPageY: function(y) {
-        if(y < this.touchMoveEvtPageY) {
-            this.touchMoveUpDown = 1;//向上滑
-        }
-        else if (y > this.touchMoveEvtPageY){
-            this.touchMoveUpDown = 2;//向下滑
-        }
-        this.touchMoveEvtPageY = y;
-
     },
     getObjBounding: function() {
         return this.objBounding;
@@ -210,7 +185,6 @@ TimeItem.prototype = {
         
         var y = this.moveY + speed;
         this.moveElement(0, y);
-        //this.moveY = y;
 
         if (Math.abs(speed) < 0.5) {
             speed = 0;
@@ -224,27 +198,9 @@ TimeItem.prototype = {
     },
 
     inBox: function() {
-        var maxY = 3 * this.itemHeight;
-        var minY = -(this.objBounding.height - 4 * this.itemHeight);
         var delta = 0; //delta变化量
         var y = this.moveY;
-
-        if(y > maxY) {
-            delta = maxY - y;
-        }
-        else if(y < minY) {
-            delta = minY - y;   
-        }
-        else {
-            //调整位置,使时间块位于中间
-            // if(this.touchMoveUpDown == 1) {
-            //     delta = Math.floor(y / this.itemHeight) * this.itemHeight - y;
-            // }
-            // else {
-            //     delta = Math.ceil(y / this.itemHeight) * this.itemHeight - y;    
-            // }
-            delta = Math.round(y / this.itemHeight) * this.itemHeight - y;
-        }
+        delta = Math.round(y / this.itemHeight) * this.itemHeight - y;
 
         var start = 0;
         var during = 40;
@@ -252,8 +208,7 @@ TimeItem.prototype = {
         //变化量为0,不用动
         if(delta == 0) {
             this.inertia = false;
-            
-            this.calTime(init);
+            this.calTime();
             return;
         }
 
@@ -270,7 +225,6 @@ TimeItem.prototype = {
         start++;
         var y = easeOutQuad(start, init, delta, during);
         this.moveElement(0, y);
-        //this.moveY = y;
 
         if (start < during) {
             requestAnimationFrame(function() {
@@ -282,9 +236,7 @@ TimeItem.prototype = {
         }
     },
 
-    calTime: function(y) {
-        this.moveY = y;
-        //this.timeVal = this.options.startNum + this.offset - y / this.itemHeight;
+    calTime: function() {
         this.options.calTimeCallback(this.timeVal);
     },
     setTimeCount: function() {
