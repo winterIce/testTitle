@@ -539,7 +539,7 @@
 	    this.transformY = 0; //存储style.transform里的y
 	    this.moveY = 0;
 	    this.itemHeight = 34;
-	    this.offset = 3;
+	    this.offset = 4;
 	    this.timeVal = 0;
 	    this.startTimeVal = 0; //循环块的开始
 	    this.endTimeVal = 0; //循环块的结束
@@ -766,8 +766,8 @@
 	        this.options.calTimeCallback(this.timeVal);
 	    },
 	    setTimeCount: function setTimeCount() {
-	        this.startTimeVal = this.timeVal - 4 >= this.options.startNum ? this.timeVal - 4 : this.options.endNum + 1 - (4 - (this.timeVal - this.options.startNum));
-	        this.endTimeVal = this.timeVal + 4 <= this.options.endNum ? this.timeVal + 4 : this.options.startNum - 1 + (4 - (this.options.endNum - this.timeVal));
+	        this.startTimeVal = this.timeVal - this.offset >= this.options.startNum ? this.timeVal - this.offset : this.options.endNum + 1 - (this.offset - (this.timeVal - this.options.startNum));
+	        this.endTimeVal = this.timeVal + this.offset <= this.options.endNum ? this.timeVal + this.offset : this.options.startNum - 1 + (this.offset - (this.options.endNum - this.timeVal));
 
 	        var content = [],
 	            i,
