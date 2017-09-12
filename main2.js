@@ -1,4 +1,4 @@
-var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation, view1;
+var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation, view1, images;
 var stageWidth =  document.documentElement.clientWidth;
 var stageHeight = document.documentElement.clientHeight;
 var stageScale = stageWidth/(750/2);
