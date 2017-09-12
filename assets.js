@@ -461,7 +461,7 @@ an.getComposition = function(id) {
 	return an.compositions[id];
 }
 
-
+window.lib = lib;
 
 })(createjs = createjs||{}, AdobeAn = AdobeAn||{});
 var createjs, AdobeAn;
