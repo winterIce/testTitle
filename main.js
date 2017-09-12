@@ -21,6 +21,7 @@ canvas.style.width = 750/2*stageScale + 'px';
 canvas.style.height = 1206/2*stageScale + 'px';
 function init() {
     stage = new createjs.Stage(canvas);
+	images = images||{};
     var loader = new createjs.LoadQueue(true);
     loader.addEventListener("fileload", handleFileLoad);
     loader.addEventListener("progress",loadProgressHandler);
