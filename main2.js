@@ -3,7 +3,7 @@ var stageWidth =  document.documentElement.clientWidth;
 var stageHeight = document.documentElement.clientHeight;
 var stageScale = stageWidth/(750/2);
 function init() {
-    canvas = document.getElementById("canvas");
+    canvas = document.getElementById("mainView");
     anim_container = document.getElementById("animation_container");
     dom_overlay_container = document.getElementById("dom_overlay_container");
     images = images||{};
