@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2016/2/23.
  */
-var canvas,img,stage,model,stageWidth,stageHeight,stageScale,view1,cls={};
+var canvas,img,stage,model,stageWidth,stageHeight,stageScale,view1,cls={},images;
 
 model = new createjs.EventDispatcher();
 stageWidth =  document.documentElement.clientWidth;
@@ -21,6 +21,7 @@ canvas.style.width = 750/2*stageScale + 'px';
 canvas.style.height = 1206/2*stageScale + 'px';
 function init() {
     stage = new createjs.Stage(canvas);
+	images = images||{};
     var loader = new createjs.LoadQueue(true);
     loader.addEventListener("fileload", handleFileLoad);
     loader.addEventListener("progress",loadProgressHandler);
