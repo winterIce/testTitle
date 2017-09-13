@@ -17,26 +17,6 @@
 <script src="assets.js?1505210656898"></script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
-//me
-var model, stageWidth, stageHeight, stageScale;
-model = new createjs.EventDispatcher();
-stageWidth =  document.documentElement.clientWidth;
-stageHeight = document.documentElement.clientHeight;
-stageScale = stageWidth/(750/2);
-canvas = document.getElementById("canvas");
-if(stageWidth/stageHeight > 0.665)
-{
-    stageScale = stageHeight/(1206/2);
-    canvas.style.left = (stageWidth - 750/2*stageScale)/2 + 'px';
-}
-else
-{
-    stageScale = stageWidth/(750/2);
-}
-canvas.style.width = 750/2*stageScale + 'px';
-canvas.style.height = 1206/2*stageScale + 'px';
-
-
 
 function init() {
 	canvas = document.getElementById("canvas");
@@ -49,6 +29,25 @@ function init() {
 	loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
 	var lib=comp.getLibrary();
 	loader.loadManifest(lib.properties.manifest);
+
+	//me
+	var model, stageWidth, stageHeight, stageScale;
+	model = new createjs.EventDispatcher();
+	stageWidth =  document.documentElement.clientWidth;
+	stageHeight = document.documentElement.clientHeight;
+	stageScale = stageWidth/(750/2);
+	canvas = document.getElementById("canvas");
+	if(stageWidth/stageHeight > 0.665)
+	{
+	    stageScale = stageHeight/(1206/2);
+	    canvas.style.left = (stageWidth - 750/2*stageScale)/2 + 'px';
+	}
+	else
+	{
+	    stageScale = stageWidth/(750/2);
+	}
+	canvas.style.width = 750/2*stageScale + 'px';
+	canvas.style.height = 1206/2*stageScale + 'px';
 }
 function handleFileLoad(evt, comp) {
 	var images=comp.getImages();	
