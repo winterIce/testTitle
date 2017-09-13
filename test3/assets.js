@@ -390,8 +390,8 @@ p.nominalBounds = null;
 // library properties:
 lib.properties = {
 	id: '2FE794F78938404CAA04B6B991FF9458',
-	width: 550,
-	height: 400,
+	width: 750,
+	height: 1206,
 	fps: 24,
 	color: "#FFFFFF",
 	opacity: 1.00,
