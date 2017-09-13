@@ -18,6 +18,9 @@
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 
+//me
+var model, stageWidth, stageHeight, stageScale;
+
 function init() {
 	canvas = document.getElementById("canvas");
 	anim_container = document.getElementById("animation_container");
@@ -31,7 +34,6 @@ function init() {
 	loader.loadManifest(lib.properties.manifest);
 
 	//me
-	var model, stageWidth, stageHeight, stageScale;
 	model = new createjs.EventDispatcher();
 	stageWidth =  document.documentElement.clientWidth;
 	stageHeight = document.documentElement.clientHeight;
