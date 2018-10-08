@@ -1,0 +1,116 @@
+@containerWidth: 160px;
+
+.shareContent {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 61px;
+  width: @containerWidth;
+  height: 50px;
+  white-space: nowrap;
+  animation: 0.5s shareContainerSlideRight;
+  z-index: 10;
+  background: #2b2b2b;
+
+  &.shareVisible {
+    display: block;
+  }
+
+  @keyframes shareContainerSlideRight {
+    0% {
+      width: 0;
+      overflow: hidden;
+    }
+    100% {
+      width: @containerWidth;
+    }
+  }
+
+  .iconShare {
+    display: inline-block;
+    width: 33px;
+    min-height: 33px;
+    margin: 0 3px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .shareWeibo {
+    background-image: url(images/icon-sina.png);
+
+    &:hover {
+      background-image: url(images/icon-sina-hover.png);
+    }
+  }
+
+
+  .shareWechat {
+    display: inline-block;
+    position: relative;
+    background-image: url(images/icon-wechat.png);
+
+    &:hover {
+      background-image: url(images/icon-wechat-hover.png);
+    }
+  }
+
+  @qrContainerSize: 66px;
+
+  .shareQrContainer {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    background: #fff;
+    top: 42px;
+    left: -27px;
+    padding: 10px;
+    height: @qrContainerSize;
+    width: @qrContainerSize;
+
+    &.qrVisible {
+      display: block;
+      animation: qrContainerSlideDown 0.2s;
+    }
+
+    &:before {
+      display: block;
+      content: "";
+      position: absolute;
+      border: 5px solid #2b2b2b;
+      border-bottom-color: #fff;
+      top: -10px;
+      left: 38px;
+    }
+
+    @keyframes qrContainerSlideDown {
+      0% {
+        height: 0;
+        overflow: hidden;
+      }
+      100% {
+        height: @qrContainerSize;
+      }
+    }
+  }
+
+  .shareQQ {
+    background-image: url(images/icon-qq.png);
+
+    &:hover {
+      background-image: url(images/icon-qq-hover.png);
+    }
+  }
+
+  .shareQzone {
+    background-image: url(images/icon-qzone.png);
+
+    &:hover {
+      background-image: url(images/icon-qzone-hover.png);
+    }
+  }
+
+  .shareQzone:hover {
+    background-image: url(images/icon-qzone-hover.png);
+  }
+}
+

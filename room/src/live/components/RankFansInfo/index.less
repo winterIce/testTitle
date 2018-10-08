@@ -1,0 +1,70 @@
+@import "../../../css/common.less";
+
+.rank-fans-info {
+  position: relative;
+  height: 48px;
+  color: #b1b1b1;
+  a {
+    color: #b1b1b1;
+  }
+
+  .no1 {
+    color: #fb1;
+  }
+  .no2 {
+    color: #9ce;
+  }
+  .no3 {
+    color: #f86;
+  }
+
+  .base {
+    position: absolute;
+    top: 11px;
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+  }
+  .nobg (@num: 1) {
+    background: url("img/no@{num}.png") no-repeat;
+    color: rgba(0, 0, 0, 0);
+  }
+
+  .num {
+    .base;
+    left: 9px;
+    width: 26px;
+    font-size: 16px;
+    text-align: center;
+    &.no1 {
+      .nobg(1);
+    }
+    &.no2 {
+      .nobg(2);
+    }
+    &.no3 {
+      .nobg(3);
+    }
+  }
+  .img {
+    .base;
+    top: 6px;
+    left: 44px;
+    img {
+      width: 36px;
+      height: 36px;
+      border-radius: 36px;
+    }
+  }
+  .nickname {
+    .base;
+    .text-overflow-ellipsis;
+    left: 90px;
+    max-width: 110px;
+  }
+  .coin {
+    .base;
+    right: 9px;
+    max-width: 110px;
+  }
+}

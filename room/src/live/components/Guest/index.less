@@ -1,0 +1,277 @@
+@import "../../../css/common.less";
+
+.guest-comp {
+  width: 177px;
+  height: 377px;
+  padding-top: 18px;
+
+  .gimgbox {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+  }
+
+  .gout {
+    position: relative;
+    height: 96px;
+    width: 96px;
+    border: 2px solid #999;
+    background: #fff;
+    border-radius: 50px;
+    overflow: hidden;
+
+    &.gout1 {
+      border-color: #fb1;
+    }
+
+    &.gout2 {
+      border-color: #9ce;
+    }
+
+    &.gout3 {
+      border-color: #f86;
+    }
+  }
+
+  .gin {
+    position: absolute;
+    left: 0;
+    bottom: -20px;
+    z-index: 0;
+    width: 96px;
+    height: 50px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    background: rgba(153, 153, 153, .6);
+
+    &.gin1 {
+      background: rgba(255, 187, 17, .6);
+    }
+
+    &.gin2 {
+      background: rgba(153, 204, 238, .6);
+    }
+
+    &.gin3 {
+      background: rgba(255, 136, 102, .6);
+    }
+  }
+
+  .glink {
+    img {
+      height: 96px;
+      width: 96px;
+    }
+  }
+
+  .gcrown {
+    position: absolute;
+    left: -4px;
+    top: -14px;
+    z-index: 0;
+    height: 56px;
+    width: 49px;
+    background: url(./img/crown.png);
+  }
+
+  .gnum {
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    z-index: 1;
+    width: 96px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 36px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    color: #fff;
+    text-align: center;
+
+    &.gnum2 {
+      font-size: 30px;
+    }
+  }
+
+  .gpillar {
+    position: relative;
+    width: 36px;
+    height: 120px;
+    margin: 17px auto 0 auto;
+    overflow: hidden;
+  }
+
+  .gpout {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin-top: 10px;
+    width: 36px;
+  }
+
+  .gpin {
+    position: absolute;
+    left: 0;
+    top: -10px;
+    z-index: 0;
+    width: 0;
+    height: 0;
+    border-left: transparent 36px solid;
+  }
+
+  .gpout-bg {
+    z-index: 0;
+    height: 110px;
+    background: gray;
+  }
+
+  .gpin-bg {
+    border-bottom: 10px gray solid;
+    border-top-right-radius: 3px;
+  }
+
+  .gpout-val {
+    z-index: 1;
+    height: 0px;
+    background: #fb1;
+    transition: height .6s;
+    -moz-transition: height .6s;
+    -webkit-transition: height .6s;
+    -o-transition: height .6s;
+  }
+
+  .gpin-val {
+    border-bottom: 10px #fb1 solid;
+  }
+
+  .gticket {
+    height: 22px;
+    padding-top: 8px;
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .gname {
+    height: 20px;
+    padding-top: 2px;
+    line-height: 20px;
+    font-size: 16px;
+    text-align: center;
+    color: #fb1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .gvotebar {
+    position: relative;
+    width: 136px;
+    height: 30px;
+    margin: 14px auto 0 auto;
+  }
+
+  .gvbtn {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 58px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid #5dc4ed;
+    border-radius: 3px;
+    text-decoration: none;
+
+    &.gvbtn-disable {
+      opacity: .3;
+      filter: alpha(opacity=30);
+    }
+  }
+
+  .gvbtn-vote {
+    left: 0;
+    color: #fff;
+    background: #5dc4ed;
+
+    &:hover {
+      background: #9ee4ff;
+      border-color: #9ee4ff;
+    }
+  }
+
+  .gvbtn-follow {
+    right: 0;
+    color: #5dc4ed;
+
+    &:hover {
+      color: #9ee4ff;
+      border-color: #9ee4ff;
+    }
+  }
+
+  .gfans {
+    position: relative;
+    margin: 7px 0 0 -11px;
+    height: 36px;
+  }
+
+  .gfan {
+    position: relative;
+    float: left;
+    *display: inline;
+    height: 34px;
+    width: 34px;
+    margin-left: 11px;
+    border: 1px solid #b1b1b1;
+    border-radius: 50%;
+  }
+
+  .gflink {
+    img {
+      height: 34px;
+      width: 34px;
+      border-radius: 50%;
+    }
+  }
+
+  .gfindex {
+    position: absolute;
+    z-index: 0;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    background: #999;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 50%;
+  }
+
+  .gmsg {
+    position: absolute;
+    left: 50%;
+    top: 186px;
+    z-index: 6;
+    height: 30px;
+    font-size: 14px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    background: rgba(153, 153, 153, .8);
+    border-radius: 3px;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 0 5px;
+  }
+
+}

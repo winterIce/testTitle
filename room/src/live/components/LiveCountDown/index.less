@@ -1,0 +1,174 @@
+.liveCountDown {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1090px;
+  z-index: 20;
+  color: #fff;
+  white-space: nowrap;
+
+  /* 有离线MV */
+  &.offlineLive {
+    height: 60px;
+
+    .countDownMask {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #000;
+      opacity: 0.6;
+      z-index: -1;
+    }
+
+    .title {
+      display: inline-block;
+      margin: 20px 10px 0 20px;
+      color: #5dc4ed;
+      line-height: 19px;
+      vertical-align: top;
+    }
+
+    .desc {
+      display: inline-block;
+      font-size: 14px;
+      line-height: 19px;
+      margin: 20px 10px 0 0;
+      vertical-align: top;
+    }
+
+    .times {
+      display: inline-block;
+      margin-top: 7px;
+      font-size: 20px;
+      
+
+      .timeItem {
+        margin: 0 10px;
+        vertical-align: middle;
+        line-height: 47px;
+      }
+
+      .timeValue {
+        font-size: 36px;
+        margin-right: 10px;
+        vertical-align: top;
+      }
+    }
+
+    .tips {
+      display: block; 
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 14px;
+    }
+
+  }
+
+  /* 无离线MV */
+  &.fullLive {
+    height: 613px; 
+    background: url(images/bg-normal.jpg) no-repeat scroll left bottom;
+
+    .countDownMask {
+      display: none;
+    }
+
+    .innerCountDown {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .title {
+      display: none;
+    }
+
+    .desc {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .times {
+      .timeValue {
+        display: block;
+        font-size: 76.5px;
+        line-height: 90px;
+        height: 90px;
+        min-width: 100px;
+      }
+      
+      .timeItem {
+        display: inline-block;
+        margin: 0 21px;
+        font-size: 26px;
+        font-weight: normal;
+      }
+    }
+
+    .timeMinute {
+      position: relative;
+
+      &:before, &:after {
+        position: absolute;
+        content: ":";
+        display: block;
+        font-size: 21px;
+        height: 27px;
+        width: 21px;
+        line-height: 27px;
+      }
+
+      &:before {
+        left: -31px;
+        top: 30px;
+      }
+
+      &:after { 
+        right: -31px;
+        top: 30px;
+      }
+    }
+
+    .tips {
+      font-size: 14px;
+      margin-top: 28px;
+      line-height: 19px;
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .liveCountDown.fullLive {
+    width: 890px!important;
+    height: 501px!important;
+    background: url(images/bg1440.jpg) !important;
+  }
+
+  .liveCountDown.offlineLive {
+    width: 890px!important;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .liveCountDown.fullLive {
+    width: 690px!important;
+    height: 388px!important;
+    background: url(images/bg1280.jpg) !important;
+  }
+
+  .liveCountDown.offlineLive {
+    width: 690px!important;
+
+    .timeSecond {
+      display: none;
+    }
+  }
+}

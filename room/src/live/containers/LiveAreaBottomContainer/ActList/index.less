@@ -1,0 +1,90 @@
+.actToggle {
+  position: relative;
+
+  .actToggleIconClose {
+    display: block;
+    background: url(../images/icon-dog-fat.png) no-repeat scroll left top;
+    width: 47px;
+    height: 53px;
+    position: absolute;
+    z-index: 2;
+    bottom: 52px;
+    right: 5px;
+    cursor: pointer;
+  }
+
+  .actToggleTitle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    white-space: nowrap;
+    color: #fff;
+    background-color: #4990F3;
+    font-size: 12px;
+    border-radius: 7px;
+    padding: 1px;
+  }
+
+  .actListContainer {
+    bottom: 52px;
+    right: 10px;
+
+    &.actListContainer-enter {
+      height: 0;
+      overflow: hidden;
+    }
+
+    &.actListContainer-enter-active {
+      height: 300px;
+      transition:  width 0.3s ease-in-out, height 0.3s ease-in-out;
+    }
+
+
+    &.actListContainer-leave {
+      width: 380px;
+      height: 300px;
+      overflow: hidden;
+    }
+
+    &.actListContainer-leave-active {
+      height: 0;
+      transition:  width 0.3s ease-in-out, height 0.3s ease-in-out;
+    }
+  }
+
+  .actLikeToast {
+    position: absolute;
+    bottom: 155px;
+    right: 200px;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: #999;
+    white-space: nowrap;
+    padding: 0 10px;
+    border-radius: 3px;
+    opacity: 0.8;
+    color: #fff;
+    transform: translate(50%, 50%);
+
+    &.actLikeToast-enter {
+      opacity: 0;
+    }
+
+    &.actLikeToast-enter-active {
+      opacity: 0.8;
+      transition:  opacity 0.5s ease-in-out;
+    }
+
+
+    &.actLikeToast-leave {
+      opacity: 0.8;
+    }
+
+    &.actLikeToast-leave-active {
+      opacity: 0;
+      transition:  opacity 0.5s ease-in-out;
+    }
+  }
+}

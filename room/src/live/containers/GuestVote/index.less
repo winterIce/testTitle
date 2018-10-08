@@ -1,0 +1,136 @@
+@import "../../../css/common.less";
+
+.vote-comp {
+  position: absolute;
+  left: -1000px;
+  top: -1000px;
+  z-index: 19;
+  width: 140px;
+  height: 232px;
+  padding-top: 30px;
+  font-size: 12px;
+
+  .varc {
+    position: absolute;
+    left: 40px;
+    top: 0;
+    z-index: 0;
+    width: 58px;
+    height: 30px;
+    border: 1px solid #3a3a3a;
+    border-bottom: none;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    background: #1d1d1d;
+  }
+
+  .vimgbox {
+    position: absolute;
+    left: 50px;
+    top: 10px;
+    z-index: 6;
+    width: 40px;
+    height: 40px;
+
+    .vimg {
+      display: block;
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .vmain {
+    height: 210px;
+    padding-top: 20px;
+    border: 1px solid #3a3a3a;
+    border-radius: 3px;
+    background: #1d1d1d;
+
+    .vinfo {
+      height: 36px;
+      padding-bottom: 8px;
+      color: #b1b1b1;
+      text-align: center;
+    }
+
+    .vinfol {
+      height: 18px;
+      line-height: 18px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .vgiftli {
+      position: relative;
+      height: 39px;
+      border-top: 1px solid #3a3a3a;
+      color: #fff;
+
+      &.vgiftli-diy {
+        height: 45px;
+
+        .vgbtn {
+          top: 11px;
+        }
+      }
+    }
+
+    .vgnum {
+      display: inline-block;
+      height: 39px;
+      padding-left: 14px;
+      line-height: 39px;
+    }
+
+    .vgbtn {
+      position: absolute;
+      right: 6px;
+      top: 7px;
+      z-index: 0;
+      width: 40px;
+      height: 24px;
+      border-radius: 3px;
+      color: #fff;
+      background: #5dc4ed;
+      font-size: 12px;
+      line-height: 24px;
+      text-align: center;
+
+      &:hover {
+        background: #9ee4ff;
+      }
+
+      &.vgbtn-disable {
+        color: #999;
+        background: #3a3a3a;
+
+        &:hover {
+          color: #999;
+          background: #3a3a3a;
+        }
+      }
+    }
+
+    .vgninput-box {
+      width: 68px;
+      height: 22px;
+      padding: 0 5px;
+      margin: 11px 0 0 8px;
+      border: 1px solid #3a3a3a;
+      border-radius: 3px;
+    }
+
+    .vgninput {
+      outline: none;
+      border: none;
+      background: none;
+      color: #fff;
+      font-size: 12px;
+      line-height: 22px;
+      height: 22px;
+      width: 68px;
+    }
+  }
+
+}

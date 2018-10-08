@@ -1,0 +1,66 @@
+.actToastWrapper {
+  position: absolute;
+  bottom: 52px;
+  right: 0px;
+  width: 476px;
+  height: 280px;
+  overflow: hidden;
+
+  &.notPointEvents {
+    pointer-events: none;
+  }
+
+  .actToastContainer {
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+
+    &.actToastContainer-enter {
+      transform: translateY(100%);
+    }
+
+    &.actToastContainer-enter-active {
+      transform: translateY(0);
+      transition: transform .5s ease-in-out .4s;
+    }
+
+    &.actToastContainer-leave {
+      transform: translateY(0);
+    }
+
+    &.actToastContainer-leave-active {
+      transform: translateY(100%);
+      transition: transform .5s;
+    }
+  }
+
+  .actIcon {
+    display: block;
+    background: url(../images/icon-dog-fat.png) no-repeat scroll left top;
+    width: 47px;
+    height: 53px;
+    position: absolute;
+    bottom: -1px;
+    z-index: 2;
+    right: 5px;
+
+    &.actIcon-enter {
+      transform: translateY(100%);
+    }
+
+    &.actIcon-enter-active {
+      transform: translateY(0);
+      transition: transform .3s;
+    }
+
+
+    &.actIcon-leave {
+      transform: translateY(0);
+    }
+
+    &.actIcon-leave-active {
+      transform: translateY(100%);
+      transition: transform .3s ease-in-out 0.6s;
+    }
+  }
+}

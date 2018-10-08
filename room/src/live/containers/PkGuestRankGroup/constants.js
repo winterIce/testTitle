@@ -1,0 +1,21 @@
+
+// 获取pk嘉宾数据
+export const API_PK_GUEST_LIST = 'API_PK_GUEST_LIST';
+
+// 分组
+export const API_PK_GROUP_LIST = 'API_PK_GROUP_LIST';
+
+export const API_PK_FOLLOW_LIST = 'API_PK_FOLLOW_LIST';
+
+export const API_PK_FOLLOW_GUEST = 'API_PK_FOLLOW_GUEST';
+
+// 取消关注
+export const API_PK_UNFOLLOW_GUEST = 'API_PK_UNFOLLOW_GUEST';
+
+export const UPDATA_PK_SOCKET_DATA = 'UPDATA_PK_SOCKET_DATA';
+
+export const UPDATE_PK_GROUP_LIST = 'UPDATE_PK_GROUP_LIST';
+
+export const UPDATE_PK_GUEST_MSG = 'UPDATE_PK_GUEST_MSG';
+
+export const CLEAR_PK_MSG_BY_ID = 'CLEAR_PK_MSG_BY_ID';

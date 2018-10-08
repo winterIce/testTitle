@@ -1,0 +1,91 @@
+.clearfix::before,
+.clearfix::after {
+  display: none;
+  content: " ";
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+.hide {
+  display: none;
+}
+
+.none {
+  display: none;
+}
+
+.text-overflow-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.buttonClose(@size, @lineSize: 1px) {
+  position: relative;
+  display: block;
+  background: none;
+  width: @size;
+  height: @size;
+  line-height: 0;
+  outline: none;
+
+  &:before, &:after {
+    position: absolute;
+    top: 0;
+    left: @size/2;
+    display: block;
+    height: @size;
+    width: @lineSize;
+    background: #fff;
+    content: "";
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}

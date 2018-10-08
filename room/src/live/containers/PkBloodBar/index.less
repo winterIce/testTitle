@@ -1,0 +1,316 @@
+
+
+@media screen {
+  .pkblood {
+    &.show { // 血条展开
+      .group {
+        height: 328px;
+      }
+      &.slideUp .group {
+        height: 288px;
+      }
+    }
+    .group {
+      height: 358px;
+    }
+    &.slideUp .group {
+      height: 318px;
+    }
+    .fold-wrapper .fold {
+      width: 110px;
+    }
+  }
+  .pkblood-hover {
+    height: 65px;
+    bottom: 160px;
+  }
+  @media (min-width: 1280px) {
+    .pkblood {
+      &.show {
+        .group {
+          height: 441px;
+        }
+        &.slideUp .group {
+          height: 401px;
+        }
+      }
+      .group {
+        height: 471px;
+      }
+      &.slideUp .group {
+        height: 431px;
+      }
+      .fold-wrapper .fold {
+        width: 310px;
+      }
+    }
+    .pkblood-hover {
+      height: 65px;
+      bottom: 220px;
+    }
+  }
+  @media (min-width: 1440px) {
+    .pkblood {
+      &.show {
+        .group {
+          height: 553px;
+        }
+        &.slideUp .group {
+          height: 513px;
+        }
+      }
+      .group {
+        height: 583px;
+      }
+      &.slideUp .group {
+        height: 543px;
+      }
+      .fold-wrapper .fold {
+        width: 510px;
+      }
+    }
+    .pkblood-hover {
+      height: 65px;
+      bottom: 275px;
+    }
+  }
+}
+
+.pkblood-hover {
+  width: 100%;
+  position: absolute;
+}
+
+.pkblood {
+  height: 30px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 12;
+  transform: translateY(0);
+  transition: transform .3s linear;
+  pointer-events: none;
+
+  &.slideUp {
+    transform: translateY(-40px);
+  }
+
+  @group-a-color: #FF5E5E;
+  @group-b-color: #5DC4ED;
+
+  .left,
+  .right,
+  .fold {
+    pointer-events: auto;
+  }
+
+  .left,
+  .right {
+    width: 290px;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+    bottom: 30px;
+    cursor: default;
+    z-index: 2;
+
+    .win {
+      position: absolute;
+      width: 46px;
+      height: 43px;
+      z-index: 1;
+      background: url(images/fx_victory.png) no-repeat;
+    }
+    .group-text {
+      font-size: 18px;
+    }
+    strong {
+      font-weight: bold;
+      font-family: impact;
+    }
+    .group {
+      background-color: fade(#2B2B2B, 70%);
+      position: absolute;
+      width: 270px;
+      line-height: initial;
+      bottom: 30px;
+      overflow: scroll;
+      overflow-x: hidden;
+
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity .5s;
+      &.show {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .group-ul {
+      background-color: fade(#2B2B2B, 70%);
+    }
+    li:nth-child(1) {
+      border: none;
+    }
+    li {
+      height: 80px;
+      padding: 0 20px;
+      border-top: 1px solid #333;
+    }
+  }
+
+  .arrow {
+    content: '';
+    display: block;
+    border-style: solid;
+    border-color: transparent transparent #fff;
+    border-width: 10px 7px;
+    height: 0;
+    width: 0;
+
+    position: absolute;
+    top: 0;
+  }
+  .left {
+    left: 0;
+    background: url(images/fx_left.png) no-repeat;
+
+    &:before {
+      &:extend(.pkblood .arrow);
+      left: 30px;
+    }
+    .win {
+      top: -13px;
+      right: 40px;
+    }
+    .group-text {
+      color: @group-a-color;
+      text-align: left;
+      margin-left: 55px;
+    }
+  }
+  .right {
+    right: 0;
+    background: url(images/fx_right.png) no-repeat;
+
+    &:after {
+      &:extend(.pkblood .arrow);
+      right: 30px;
+    }
+    .win {
+      top: -13px;
+      left: 30px;
+    }
+    .group {
+      right: 0;
+    }
+    .group-text {
+      color: @group-b-color;
+      text-align: right;
+      margin-right: 55px;
+    }
+  }
+  &.show {
+    .fold,
+    .back,
+    .left,
+    .right {
+      animation: slideUp .25s forwards;
+    }
+    .fold-wrapper {
+      height: 250%;
+    }
+  }
+  .fold,
+  .back,
+  .left,
+  .right {
+    animation: slideDown .25s forwards;
+  }
+  .fold-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 200%;
+    bottom: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .fold {
+    position: absolute;
+    width: 110px;
+    height: 60px;
+    bottom: 30px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+
+    .fold-btn {
+      display: block;
+      width: 80px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background: url(images/fx_fold.png) no-repeat;
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      bottom: 0;
+      z-index: -1;
+      font-size: 12px;
+      color: #fff;
+      animation: slideDown .25s forwards;
+    }
+    .fold-btn.show {
+      animation: slideUp .25s forwards;
+    }
+    .fold-btn.close {
+      color: #FFBB11;
+    }
+  }
+  .back {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+    background: #2B2B2B;
+  }
+  .progress {
+    position: relative;
+    width: 95%;
+    height: 14px;
+    margin: 8px auto;
+    border-radius: 20px;
+    background: @group-b-color;
+    overflow: hidden;
+
+    .rate {
+      position: absolute;
+      left: 0;
+      height: 100%;
+      transition: width .5s;
+      border-radius: 20px 0 0 20px;
+      background: @group-a-color;
+    }
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(30px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes slideDown {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(30px);
+  }
+}

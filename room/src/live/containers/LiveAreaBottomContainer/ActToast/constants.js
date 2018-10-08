@@ -1,0 +1,12 @@
+// 更新报幕列表
+export const UPDATE_ACTTOAST_LIST = 'UPDATE_ACTTOAST_LIST';
+
+
+// 播放下一条报幕
+export const UPDATE_ACTTOAST_SHOW_NEXT = 'UPDATE_ACTTOAST_SHOW_NEXT';
+
+// 新增一条报幕
+export const INSERT_ACTTOAST_ITEM = 'INSERT_ACTTOAST_ITEM';
+
+// 隐藏报幕
+export const HIDE_ACTTOAST = 'HIDE_ACTTOAST';

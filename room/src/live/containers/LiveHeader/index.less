@@ -1,0 +1,257 @@
+@fontColor: #fff;
+@logoSize: 48px;
+@btnColor: #54c4ed;
+@btnHoverColor: #96D8F1;
+@shareIcoSize: 18px;
+
+.liveHeader {
+  padding: 5px 0 0 20px;
+  color: @fontColor;
+
+  .detail {
+    display: inline-block;
+    margin-top: 5px;
+    vertical-align: top;
+    max-width: 685px;
+  }
+
+  .headImg {
+    display: inline-block;
+    width: @logoSize;
+    height: @logoSize;
+    border-radius: 50%;
+    margin-right: 12px;
+  }
+
+  .title {
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: @fontColor;
+  }
+
+  .onlineNum {
+    font-size: 12px;
+  }
+
+  .shareCon {
+    position: relative;
+    display: inline-block;
+    margin: 5px 0 0 8px;
+    vertical-align: top;
+    z-index: 21;
+  }
+
+  .shareBtn {
+    display: block;
+    width: 56px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 6px;
+    border: 1px @btnColor solid;
+    color: @btnColor;
+    text-indent: 24px;
+    cursor: default;
+
+    &:before {
+      display: block;
+      content: "";
+      width: @shareIcoSize;
+      height: @shareIcoSize;
+      position: absolute;
+      left: 5px;
+      top: 7px;
+      background: @btnColor url(images/icon-share.png) no-repeat scroll;
+    }
+
+    &:hover {
+      border-color: @btnHoverColor;
+      color: @btnHoverColor;
+    }
+
+    &:hover:before {
+      background-color: @btnHoverColor;
+    }
+  }
+
+  @rightBtnColor: #5DC4ED;
+
+  .rightBtn {
+    display: block;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    background: @rightBtnColor;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    margin: 10px 20px 0 0;
+    outline: none!important;
+    user-select: none;
+  }
+
+  .rightBtn:hover {
+    background-color: @btnHoverColor;
+  }
+
+  /* 手机看 */
+  .mobileView {
+    position: relative;
+    float: right;
+
+    .mobileViewBtn {
+      position: relative;
+      text-align: left;
+      text-indent: 20px;
+
+      &:after {
+        display: block;
+        content: "";
+        position: absolute;
+        top: 14px;
+        right: 17px;
+        border: 5px solid transparent;
+        border-top-color: #fff;
+        width: 0;
+      }
+
+      &:hover:after {
+        top: 8px;
+        transform: rotate(180deg);
+      }
+    }
+
+    .QrContainer {
+      display: block;
+      height: 0;
+      overflow: hidden;
+      background: #fff;
+      position: absolute;
+      z-index: 1000;
+      top: 55px;
+      transition: height 0.2s;
+
+
+      &:before {
+        display: block;
+        content: "";
+        position: absolute;
+        border: 5px solid #2b2b2b;
+        border-bottom-color: #fff;
+        top: -10px;
+        left: 45px;
+      }
+
+      &.visible {
+        height: 130px;
+        overflow: visible;
+      }
+
+      canvas, img {
+        margin: 6px 6px 0;
+      }
+    }
+
+    .markText {
+      display: block;
+      margin: 3px auto;
+      width: 60px;
+      word-break: break-all;
+      word-wrap: break-word;
+      color: #000;
+      font-size: 12px;
+      line-height: 12px;
+    }
+  }
+
+  .subscribe {
+    position: relative;
+    z-index: 502; /* 在头部导航栏之上 */
+    float: right;
+
+    .subscribeBtn {
+      vertical-align: top;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .plus {
+      position: relative;
+      vertical-align: top;
+      top: -1px;
+      font-size: 20px;
+    }
+
+    .splitLine {
+      display: inline-block;
+      height: 20px;
+      border-right: 1px solid #fff;
+      vertical-align: top;
+      margin-top: 2px;
+      position: relative;
+      top: 3px;
+    }
+    .btnMark {
+      display: inline-block;
+      width: 50px;
+      text-align: center;
+    }
+    .count {
+      display: inline-block;
+      width: 48px;
+      text-align: center;
+    }
+  }
+
+  .toastContainer {
+    position: absolute;
+    top: -25px;
+    z-index: 2; 
+    display: block;
+    width: 100px;
+    line-height: 30px;
+    animation: 0.2s subscribeBtnSlideUp;
+    text-align: center;
+  }
+
+  .toast {
+    background-color: #999;
+    white-space: nowrap;
+    padding: 0 5px;
+    display: inline-block;
+    height: 30px;
+    border-radius: 3px;
+    opacity: 0.8;
+    height: 30px;
+  }
+
+  @keyframes subscribeBtnSlideUp {
+    0% {
+      top: 0;
+    }
+    100% {
+      top: -25px;
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .liveHeader {
+    .detail {
+      max-width: 485px;
+    }
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .liveHeader {
+    .detail {
+      max-width: 305px;
+    }
+
+    .rightBtn {
+      margin-right: 10px;
+    }
+  }
+}

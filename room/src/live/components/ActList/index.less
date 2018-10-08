@@ -1,0 +1,125 @@
+@import "../../../css/common.less";
+
+.actListContainer {
+  position: absolute;
+  width: 380px;
+  height: 300px;
+  background: #2b2b2b;
+  border-radius: 3px;
+
+  .actTitle {
+    height: 46px;
+    line-height: 46px;
+    font-size: 16px;
+    color: #5DC4ED;
+    text-align: center;
+  }
+
+  .actClose {
+    .buttonClose(14px);
+    position: absolute;
+    right: 20px;
+    top: 15px;
+  }
+
+  .actList {
+    height: 234px;
+    overflow-y: auto;
+
+    .acLoading, .acEmpty {
+      line-height: 234px;
+      color: rgb(117, 117, 117);
+      text-align: center;
+    }
+
+    .actItem {
+      height: 70px;
+      padding: 0 10px;
+      overflow: hidden;
+      border-bottom: 1px solid #333;
+
+      .actNo {
+        display: inline-block;
+        width: 30px;
+        text-align: center;
+        vertical-align: top;
+        font-size: 18px;
+        color: #fff;
+        line-height: 70px;
+      }
+
+      .actNameList {
+        position: relative;
+        display: inline-block;
+        width: 180px;
+        padding-left: 55px;
+        font-size: 14px;
+        line-height: 1.3;
+        vertical-align: top;
+      }
+
+      .actImg {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+      }
+
+      .actSong {
+        margin-top: 18px;
+        color: #fff;
+        max-width: 160px;
+        .text-overflow-ellipsis;
+      }
+
+      .actSinger {
+        color: #b1b1b1;
+        max-width: 160px;
+        .text-overflow-ellipsis;
+      }
+
+      .actUp {
+        display: inline-block;
+        width: 78px;
+        height: 14px;
+        margin-top: 28px;
+        white-space: nowrap;
+      }
+
+      .actUpCount {
+        display: inline-block;
+        margin-right: 5px;
+        width: 72px;
+        color: #999;
+        text-align: right;
+        vertical-align: bottom;
+        .text-overflow-ellipsis;
+      }
+
+      .actUpButton {
+        display: inline-block;
+        background: none;
+        width: 14px;
+        height: 14px;
+        background: url(images/good.png);
+        outline: none;
+
+        &.actUpSelected {
+          background: url(images/good-selected.png);
+          cursor: not-allowed;
+        }
+      }
+
+      &.actSecretItem {
+        .actSong {
+          padding-top: 8px;
+          color: #5dc4ed;
+        }
+      }
+    }
+  }
+}
+

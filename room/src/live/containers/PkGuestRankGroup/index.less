@@ -1,0 +1,168 @@
+
+
+@media screen {
+  .pkrank-group {
+    width: 1000px;
+  }
+  @media (min-width: 1280px) {
+    .pkrank-group {
+      width: 1200px;
+    }
+  }
+  @media (min-width: 1440px) {
+    .pkrank-group {
+      width: 1400px;
+    }
+  }
+}
+
+.pkrank-group {
+  margin: 0 auto;
+  min-width: 1000px;
+
+  .pkrank-group-text {
+    padding: 10px 30px;
+    margin-bottom: 20px;
+    background-color: #202020;
+
+    .pkrank-group-title {
+      width: 950px;
+      height: 350px;
+      margin: 0 auto;
+      background: url(images/title.jpg) no-repeat;
+    }
+
+    p {
+      color: #fff;
+      font-size: 14px;
+      line-height: 20px;
+      margin: 8px 0;
+
+      &.p1 {
+        margin: 0;
+      }
+      &.p1-1 {
+        margin: 0;
+        padding-left: 14px;
+      }
+    }
+    ul.pkrank-gift {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      li {
+        width: 70px;
+        text-align: center;
+        display: inline-block;
+        margin-right: 25px;
+      }
+      .gift-1 {
+        .gift-logo {
+          width: 48px;
+          height: 45px;
+          background: url(images/gift-1.png) no-repeat;
+        }
+      }
+      .gift-2 {
+        .gift-logo {
+          width: 19px;
+          height: 44px;
+          background: url(images/gift-2.png) no-repeat;
+        }
+      }
+      .gift-3 {
+        .gift-logo {
+          width: 42px;
+          height: 50px;
+          background: url(images/gift-3.png) no-repeat;
+        }
+      }
+      .gift-4 {
+        .gift-logo {
+          width: 22px;
+          height: 46px;
+          background: url(images/gift-4.png) no-repeat;
+        }
+      }
+      .gift-logo {
+        margin: 0 auto;
+      }
+      .gift-name {
+        margin: 5px 0 0;
+        line-height: 1;
+        font-size: 14px;
+        color: #fff;
+      }
+      .gift-info {
+        margin: 3px 0 0px;
+        line-height: 1;
+        font-size: 12px;
+        color: #999;
+      }
+    }
+  }
+
+  .pkrank {
+    overflow: hidden;
+
+    .group {
+      width: 49%;
+
+      &.group-0 {
+        float: left;
+      }
+      &.group-1 {
+        float: right;
+      }
+    }
+    .group-title {
+      height: 50px;
+      line-height: 50px;
+      color: #fff;
+      text-align: center;
+    }
+    .win {
+      position: absolute;
+      width: 46px;
+      height: 43px;
+      right: -60px;
+      top: 4px;
+      background: url(images/fx_victory.png) no-repeat;
+    }
+    .group-title-name {
+      font-size: 24px;
+    }
+    .group-total-tick {
+      position: relative;
+      font-size: 18px;
+      display: inline-block;
+      vertical-align: top;
+      margin-left: 10px;
+      font-family: impact;
+      strong {
+        font-weight: bold;
+      }
+    }
+    @group-a-color: #FF5E5E;
+    @group-b-color: #5DC4ED;
+
+    .group-0 .group-title {
+      background-color: @group-a-color;
+    }
+    .group-1 .group-title {
+      background-color: @group-b-color;
+    }
+    ul.group-ul {
+      background-color: #2B2B2B;
+
+      li:nth-child(1) {
+        border: none;
+      }
+      li {
+        height: 120px;
+        margin-left: 30px;
+        padding-right: 20px;
+        border-top: 1px solid #666;
+      }
+    }
+  }
+}

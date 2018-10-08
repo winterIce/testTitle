@@ -1,0 +1,28 @@
+@import "../../../css/common.less";
+
+.actToastContainer {
+  position: absolute;
+  width: 380px;
+  padding: 36px 46px 36px 30px;
+  background: #2b2b2b;
+  border-radius: 3px;
+
+  &.actToastSingleLine {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .actClose {
+    .buttonClose(14px);
+    position: absolute;
+    right: 20px;
+    top: 15px;
+  }
+
+  .actToastContent {
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+  }
+}
+
